@@ -27,6 +27,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import net.normslabs.nlmc_core.infrastructure.NlmcRegistrar;
+import net.normslabs.nlmc_core.items.tiers.NlmcToolTiers;
 import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -74,6 +76,8 @@ public class NlmcCore {
     public NlmcCore(FMLJavaModLoadingContext context) {
         IEventBus modEventBus = context.getModEventBus();
         
+        NlmcRegistrar registrar = new NlmcRegistrar(MODID, modEventBus);
+        NlmcToolTiers.registerTiers(registrar);
         
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);

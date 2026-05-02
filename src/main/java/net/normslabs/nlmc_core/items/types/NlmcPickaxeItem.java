@@ -2,15 +2,15 @@
  * Project: nlmccore
  * @author Marc-Eric Boury (TheNorm24) <webmaster@normslabs.net>
  * @copyright (c) Marc-Eric Boury 2026 - All rights reserved
- * @since 2026-05-01 02:54
+ * @since 2026-05-02 05:07
  */
 
 package net.normslabs.nlmc_core.items.types;
 
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -21,12 +21,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class NlmcAxeItem extends AxeItem {
+public class NlmcPickaxeItem extends PickaxeItem {
     
     private final IItemDescriptor descriptor;
     
-    public NlmcAxeItem(IItemDescriptor descriptor, Tier itemTier, float attackDamage, float baseAttackSpeed, Properties itemProperties) {
-        super(itemTier, attackDamage, baseAttackSpeed, itemProperties);
+    public NlmcPickaxeItem(IItemDescriptor descriptor, Tier itemTier, int baseDamage, float baseAttackSpeed, Properties itemProperties) {
+        super(itemTier, baseDamage, baseAttackSpeed, itemProperties);
         this.descriptor = descriptor;
     }
     

@@ -15,15 +15,16 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
+import net.normslabs.nlmc_core.abstracts.IBuilder;
 import net.normslabs.nlmc_core.abstracts.IModelDescriptor;
-import net.normslabs.nlmc_core.items.types.NlmcItem;
+import net.normslabs.nlmc_core.items.types.NlmcGenericItem;
 import net.normslabs.nlmc_core.rendering.NlmcItemColor;
 import net.normslabs.nlmc_core.translations.Locales;
 import net.normslabs.nlmc_core.translations.TranslationDictionary;
 
 import java.util.*;
 
-public abstract class NlmcItemDescriptor<T extends NlmcItem> implements IItemDescriptor {
+public abstract class NlmcItemDescriptor<T extends Item> implements IItemDescriptor {
     private final String modNamespace;
     private final String itemIdentifier;
     protected final Item.Properties itemProperties;
@@ -148,5 +149,54 @@ public abstract class NlmcItemDescriptor<T extends NlmcItem> implements IItemDes
     public abstract void validateForRegistration();
     
     protected abstract T createItem();
+    
+    
+    protected class Builder<TOutput extends NlmcItemDescriptor<T>> implements IBuilder<TOutput> {
+        protected TOutput itemDescriptor;
+        
+        protected Builder(TOutput blankDescriptor) {
+            this.itemDescriptor = blankDescriptor;
+        }
+        
+        public NlmcItemDescriptor<T>.Builder<TOutput> setModelDescriptor(IModelDescriptor<Item, NlmcItemColor> modelDescriptor) {
+            this.itemDescriptor.setModelDescriptor(modelDescriptor);
+            return this;
+        }
+        
+        public NlmcItemDescriptor<T>.Builder<TOutput> addTag(ResourceLocation tagLocation) {
+            this.itemDescriptor.addTag(tagLocation);
+            return this;
+        }
+        
+        public NlmcItemDescriptor<T>.Builder<TOutput> addTag(TagKey<Item> tagKey) {
+            this.itemDescriptor.addTag(tagKey);
+            return this;
+        }
+        
+        public NlmcItemDescriptor<T>.Builder<TOutput> addTranslation(Locales locale, String translationKey, String translationValue) {
+            this.itemDescriptor.addTranslation(locale, translationKey, translationValue);
+            return this;
+        }
+        
+        public NlmcItemDescriptor<T>.Builder<TOutput> addItemNameTranslation(Locales locale, String translationValue) {
+            this.itemDescriptor.addItemNameTranslation(locale, translationValue);
+            return this;
+        }
+        
+        public NlmcItemDescriptor<T>.Builder<TOutput> addItemTooltipTranslation(Locales locale, String translationValue) {
+            this.itemDescriptor.addItemTooltipTranslation(locale, translationValue);
+            return this;
+        }
+        
+        public NlmcItemDescriptor<T>.Builder<TOutput> addItemCreativeModeTab(ResourceKey<CreativeModeTab> creativeModeTab) {
+            this.itemDescriptor.addItemCreativeModeTab(creativeModeTab);
+            return this;
+        }
+        
+        @Override
+        public TOutput build() {
+            return null;
+        }
+    }
     
 }

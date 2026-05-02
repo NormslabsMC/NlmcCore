@@ -11,12 +11,13 @@ package net.normslabs.nlmc_core.items.descriptors;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
+import net.normslabs.nlmc_core.abstracts.IBuilder;
 import net.normslabs.nlmc_core.items.abstracts.NlmcItemDescriptor;
-import net.normslabs.nlmc_core.items.types.NlmcItem;
+import net.normslabs.nlmc_core.items.types.NlmcGenericItem;
 
 import java.util.function.Supplier;
 
-public class NlmcGenericItemDescriptor extends NlmcItemDescriptor<NlmcItem> {
+public class NlmcGenericItemDescriptor extends NlmcItemDescriptor<NlmcGenericItem> {
     
     private Supplier<CreativeModeTab> creativeTab = null;
     private int maxStackSize = 64;
@@ -53,8 +54,8 @@ public class NlmcGenericItemDescriptor extends NlmcItemDescriptor<NlmcItem> {
     }
     
     @Override
-    protected NlmcItem createItem() {
-        return new NlmcItem(this);
+    protected NlmcGenericItem createItem() {
+        return new NlmcGenericItem(this);
     }
     
     @Override
@@ -64,5 +65,16 @@ public class NlmcGenericItemDescriptor extends NlmcItemDescriptor<NlmcItem> {
             this.itemProperties.fireResistant();
         }
         return this.itemProperties;
+    }
+    
+    public class Builder implements IBuilder<NlmcGenericItemDescriptor> {
+        
+        private Builder() {
+        }
+        
+        @Override
+        public NlmcGenericItemDescriptor build() {
+            return null;
+        }
     }
 }

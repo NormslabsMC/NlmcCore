@@ -5,7 +5,7 @@
  * @since 2026-05-01 03:28
  */
 
-package net.normslabs.nlmc_core;
+package net.normslabs.nlmc_core.items.tiers;
 
 
 import net.minecraft.resources.ResourceLocation;
@@ -14,14 +14,14 @@ import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.ForgeTier;
 import net.minecraftforge.common.TierSortingRegistry;
+import net.normslabs.nlmc_core.NlmcTags;
 import net.normslabs.nlmc_core.infrastructure.NlmcRegistrar;
 
 import java.util.List;
 
 public class NlmcToolTiers {
     
-    public NlmcToolTiers(NlmcRegistrar registrar) {
-        registrar.ITEMS.
+    public static void registerTiers(NlmcRegistrar registrar) {
         TierSortingRegistry.registerTier(COPPER,
                                          ResourceLocation.fromNamespaceAndPath(registrar.getModNamespace(), "copper"),
                                          List.of(Tiers.STONE),
