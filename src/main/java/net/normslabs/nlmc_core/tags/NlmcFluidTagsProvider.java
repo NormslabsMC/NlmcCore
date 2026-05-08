@@ -11,42 +11,30 @@ package net.normslabs.nlmc_core.tags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.FluidTagsProvider;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.tags.ITagManager;
-import net.normslabs.nlmc_core.abstracts.AbstractTagsRegistrar;
-import net.normslabs.nlmc_core.fluids.FluidRegistrar;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
 
 public class NlmcFluidTagsProvider extends FluidTagsProvider {
-    private final AbstractTagsRegistrar<Fluid> tagsRegistrar;
+    private final NlmcTagsManager manager;
     
-    public NlmcFluidTagsProvider(AbstractTagsRegistrar<Fluid> tagsRegistrar,
+    public NlmcFluidTagsProvider(NlmcTagsManager manager,
                                  PackOutput output,
                                  CompletableFuture<HolderLookup.Provider> lookupProvider,
                                  @Nullable ExistingFileHelper existingFileHelper) {
-        super(output, lookupProvider, tagsRegistrar.getModRegistrar().getModNamespace(), existingFileHelper);
-        this.tagsRegistrar = tagsRegistrar;
+        super(output, lookupProvider, manager.getNlmcRegistrar().getModNamespace(), existingFileHelper);
+        this.manager = manager;
     }
     
     @Override
     protected void addTags(HolderLookup.Provider lookupProvider) {
-        this.tagsRegistrar.getObjectTagAssociations()
-                .forEach((fluidSupplier, tagKeyList)
-                                 -> tagKeyList.forEach(tagKey -> this.tag(tagKey).add(fluidSupplier.get())));
-        this.tagsRegistrar.getTagTagAssociations()
-                .forEach((targetTagSupplier, tagSupplierList)
-                                 -> tagSupplierList.forEach((tagSupplier) -> this.tag(targetTagSupplier.get()).addTag(tagSupplier.get())));
+        this.manager.getFluidTagAssociations()
+                    .forEach((fluidSupplier, tagKeyList)
+                                     -> tagKeyList.forEach(tagKey -> this.tag(tagKey).add(fluidSupplier.get())));
+        this.manager.getTagFluidTagAssociations()
+                    .forEach((targetTag, tagsToAddList)
+                                     -> tagsToAddList.forEach((tagToAdd) -> this.tag(targetTag).addTag(tagToAdd)));
     }
     
     

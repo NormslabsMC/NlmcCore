@@ -8,6 +8,8 @@
 package net.normslabs.nlmc_core.utils;
 
 
+import net.normslabs.nlmc_core.contents.ChemicalElements;
+
 import java.util.HashMap;
 import java.util.Map;
 

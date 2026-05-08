@@ -13,7 +13,7 @@ import net.minecraft.world.item.Tier;
 import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.registries.RegisterEvent;
-import net.normslabs.nlmc_core.abstracts.AbstractRegistrar;
+import net.normslabs.nlmc_core.infrastructure.abstracts.AbstractRegistrar;
 import net.normslabs.nlmc_core.infrastructure.NlmcRegistrar;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class ToolTiersRegistrar extends AbstractRegistrar {
         this.tierDescriptors.forEach((tierDescriptor) -> {
             TierSortingRegistry.registerTier(tierDescriptor.buildTier(),
                                              ResourceLocation.fromNamespaceAndPath(
-                                                     this.getModRegistrar().getModNamespace(),
+                                                     this.getNlmcRegistrar().getModNamespace(),
                                                      tierDescriptor.getTierName()),
                                              tierDescriptor.getLowerTiers(),
                                              tierDescriptor.getHigherTiers());

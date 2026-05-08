@@ -25,18 +25,17 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
-import net.normslabs.nlmc_core.items.abstracts.IItemDescriptor;
-import net.normslabs.nlmc_core.items.abstracts.IsFuelItem;
+import net.normslabs.nlmc_core.items.abstracts.ItemDescriptorV2;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public class NlmcFluidContainerItem extends Item {
-    protected final IItemDescriptor descriptor;
+    protected final ItemDescriptorV2<?,?> descriptor;
     private final int capacity;
     
-    public NlmcFluidContainerItem(IItemDescriptor descriptor, int capacity) {
-        super(descriptor.buildProperties());
+    public NlmcFluidContainerItem(ItemDescriptorV2<?,?> descriptor, int capacity) {
+        super(descriptor.getMcItemProperties());
         this.descriptor = descriptor;
         this.capacity = capacity;
     }
@@ -66,14 +65,16 @@ public class NlmcFluidContainerItem extends Item {
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level worldLevel, List<Component> tooltipsList,
                                 TooltipFlag tooltipFlag) {
-        tooltipsList.add(Component.translatable(this.descriptor.getTooltipTranslationKey()));
+        this.descriptor.getTooltipDictionaryKeys().forEach((key) -> {
+            tooltipsList.add(Component.translatable(key));
+        });
         super.appendHoverText(itemStack, worldLevel, tooltipsList, tooltipFlag);
     }
     
     @Override
     public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
-        if (this.descriptor instanceof IsFuelItem) {
-            return ((IsFuelItem) this.descriptor).getFuelProperties().getBurnTimeInTicks();
+        if (this.descriptor.isFuel()) {
+            return this.descriptor.getFuelProperties().getBurnTimeInTicks();
         }
         return 0;
     }

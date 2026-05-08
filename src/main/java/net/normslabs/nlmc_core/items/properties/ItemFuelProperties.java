@@ -8,15 +8,50 @@
 package net.normslabs.nlmc_core.items.properties;
 
 
-public class ItemFuelProperties {
-    private final int burnTimeInTicks;
+import net.normslabs.nlmc_core.abstracts.BuildableV3;
+import net.normslabs.nlmc_core.abstracts.BuilderV3;
+import net.normslabs.nlmc_core.items.abstracts.ItemDescriptorV2;
+
+public class ItemFuelProperties extends BuildableV3<ItemFuelProperties, ItemFuelProperties.Builder> {
+    private final ItemDescriptorV2<?,?,?> parentDescriptor;
+    private int burnTimeInTicks;
     
-    public ItemFuelProperties(int burnTimeInTicks) {
-        this.burnTimeInTicks = burnTimeInTicks;
+    public ItemFuelProperties(ItemDescriptorV2<?,?,?> parentDescriptor) {
+        this.parentDescriptor = parentDescriptor;
+        this.burnTimeInTicks = Integer.MIN_VALUE;
+    }
+    
+    @Override
+    public void validateForBuild() {
+        if (this.burnTimeInTicks == Integer.MIN_VALUE) {
+            throw new IllegalArgumentException("ItemFuelProperties burnTimeInTicks value must be set.");
+        }
+    }
+    
+    @Override
+    public Builder getBuilder() {
+        return new Builder(this);
     }
     
     public int getBurnTimeInTicks() {
         return this.burnTimeInTicks;
+    }
+    
+    protected void setBurnTimeInTicks(int burnTimeInTicks) {
+        this.burnTimeInTicks = burnTimeInTicks;
+    }
+    
+    public class Builder extends BuilderV3<Builder, ItemFuelProperties> {
+        
+        public Builder(ItemFuelProperties initialBuildable) {
+            super(initialBuildable);
+        }
+        
+        public Builder setBurnTimeInTicks(int burnTimeInTicks) {
+            this.buildable.burnTimeInTicks = burnTimeInTicks;
+            return this.self();
+        }
+        
     }
     
 }

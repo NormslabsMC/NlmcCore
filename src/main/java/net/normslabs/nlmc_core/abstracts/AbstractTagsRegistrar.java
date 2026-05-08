@@ -10,12 +10,9 @@ package net.normslabs.nlmc_core.abstracts;
 
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.object.Item;
-import net.minecraftforge.data.event.GatherDataEvent;
-import net.minecraftforge.registries.RegisterEvent;
+import net.normslabs.nlmc_core.infrastructure.abstracts.AbstractRegistrar;
 import net.normslabs.nlmc_core.infrastructure.NlmcRegistrar;
 
 import java.util.HashMap;

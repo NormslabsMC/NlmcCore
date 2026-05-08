@@ -18,7 +18,6 @@ import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -28,7 +27,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.normslabs.nlmc_core.infrastructure.NlmcRegistrar;
-import net.normslabs.nlmc_core.items.tiers.NlmcToolTiers;
+import net.normslabs.nlmc_core.contents.NlmcToolTiers;
 import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -76,6 +75,9 @@ public class NlmcCore {
     public NlmcCore(FMLJavaModLoadingContext context) {
         IEventBus modEventBus = context.getModEventBus();
         
+        // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
+        context.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        
         NlmcRegistrar registrar = new NlmcRegistrar(MODID, modEventBus);
         NlmcToolTiers.registerTiers(registrar);
         
@@ -95,8 +97,6 @@ public class NlmcCore {
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
         
-        // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
     
     private void commonSetup(final FMLCommonSetupEvent event) {

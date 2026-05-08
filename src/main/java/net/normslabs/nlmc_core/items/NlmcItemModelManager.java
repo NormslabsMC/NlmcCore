@@ -10,17 +10,15 @@ package net.normslabs.nlmc_core.items;
 
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.normslabs.nlmc_core.abstracts.IModelDescriptor;
-import net.normslabs.nlmc_core.items.abstracts.IItemDescriptor;
+import net.normslabs.nlmc_core.abstracts.IModelV2;
+import net.normslabs.nlmc_core.items.abstracts.ItemDescriptorV2;
 import net.normslabs.nlmc_core.items.models.CubeTopItemModel;
 import net.normslabs.nlmc_core.items.models.CustomCubeItemModel;
-import net.normslabs.nlmc_core.items.models.SimpleItemModel;
+import net.normslabs.nlmc_core.items.models.GenericItemModel;
 import net.normslabs.nlmc_core.items.models.UniformCubeItemModel;
-import net.normslabs.nlmc_core.rendering.NlmcItemColor;
 import net.normslabs.nlmc_core.rendering.Texture;
 import net.normslabs.nlmc_core.utils.ResLocUtils;
 
@@ -36,23 +34,21 @@ public class NlmcItemModelManager extends ItemModelProvider {
     private final ItemRegistrar parentRegistrar;
     
     public NlmcItemModelManager(ItemRegistrar parentRegistrar, PackOutput output, ExistingFileHelper existingFileHelper) {
-        super(output, parentRegistrar.getModRegistrar().getModNamespace(), existingFileHelper);
+        super(output, parentRegistrar.getNlmcRegistrar().getModNamespace(), existingFileHelper);
         this.parentRegistrar = parentRegistrar;
     }
     
     @Override
     protected void registerModels() {
-        this.parentRegistrar.getRegisteredObjects().forEach((registryEntry) -> {
-            this.buildModelFor(registryEntry.getDescriptor());
-        });
+        this.parentRegistrar.getNlmcRegistry().values().forEach(this::buildModelFor);
     }
     
-    private void buildModelFor(IItemDescriptor itemDescriptor) {
+    private void buildModelFor(ItemDescriptorV2<?, ?, ?> itemDescriptor) {
         String itemIdentifier = itemDescriptor.getIdentifier();
-        IModelDescriptor<Item, NlmcItemColor> modelDescriptor = itemDescriptor.getModelDescriptor();
+        IModelV2<?, ?, ?> modelDescriptor = itemDescriptor.getModelDescriptor();
         
-        if (modelDescriptor instanceof SimpleItemModel) {
-            this.simpleItem(itemIdentifier, (SimpleItemModel) modelDescriptor);
+        if (modelDescriptor instanceof GenericItemModel) {
+            this.simpleItem(itemIdentifier, (GenericItemModel) modelDescriptor);
         } else if (modelDescriptor instanceof UniformCubeItemModel) {
             this.uniformCubeItem(itemIdentifier, (UniformCubeItemModel) modelDescriptor);
         } else if (modelDescriptor instanceof CubeTopItemModel) {
@@ -64,7 +60,7 @@ public class NlmcItemModelManager extends ItemModelProvider {
         }
     }
     
-    private void simpleItem(String itemIdentifier, SimpleItemModel modelDescriptor) {
+    private void simpleItem(String itemIdentifier, GenericItemModel modelDescriptor) {
         ItemModelBuilder builder = this.withExistingParent(itemIdentifier, modelDescriptor.getParentModel());
         for (Texture texture : modelDescriptor.getTextureMap().values()) {
             builder.texture(texture.getTextureKey(), texture.getTextureLocation());

@@ -8,24 +8,46 @@
 package net.normslabs.nlmc_core.items.abstracts;
 
 
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.normslabs.nlmc_core.abstracts.IRegistrable;
-import net.normslabs.nlmc_core.translations.Locales;
+import net.minecraft.world.item.Rarity;
+import net.normslabs.nlmc_core.abstracts.*;
+import net.normslabs.nlmc_core.items.models.abstracts.IHasItemModelV2;
+import net.normslabs.nlmc_core.items.models.abstracts.IItemModelV2;
+import net.normslabs.nlmc_core.items.properties.ItemArmorProperties;
+import net.normslabs.nlmc_core.items.properties.ItemFoodProperties;
+import net.normslabs.nlmc_core.items.properties.ItemFuelProperties;
+import net.normslabs.nlmc_core.items.properties.ItemToolProperties;
 
-import java.util.List;
-
-public interface IItemDescriptor extends IRegistrable<Item>, IHasItemModelDescriptor {
+public interface IItemDescriptor<
+        TSelf extends IItemDescriptor<TSelf, TBuilder, TModel, TModelBuilder, TNlmcType>,
+        TBuilder extends IBuilderV3<TBuilder, TSelf>,
+        TModel extends IItemModelV2<TModel, TModelBuilder>,
+        TModelBuilder extends IBuilderV3<TModelBuilder, TModel>,
+        TNlmcType extends Item>
+        extends IDescriptor<TSelf, TBuilder>,
+        IRegistrable<TNlmcType>,
+        IHasItemModelV2<TModel, TModelBuilder>,
+        IHasDisplayedName,
+        IHasTooltips,
+        ITaggable<Item>,
+        IBuildableV3<TSelf, TBuilder>,
+        IInCreativeTabsV2 {
     
-    Item.Properties buildProperties();
+    boolean isFood();
+    boolean isFuel();
+    boolean isTool();
+    boolean isArmor();
     
-    List<ResourceKey<CreativeModeTab>> getCreativeTabs();
+    boolean isFireResistant();
+    int getMaxStackSize();
+    Rarity getRarity();
+    int getDurability();
     
-    void addItemNameTranslation(Locales locale, String translationValue);
+    ItemFoodProperties getFoodProperties();
+    ItemFuelProperties getFuelProperties();
+    ItemToolProperties getToolProperties();
+    ItemArmorProperties getArmorProperties();
     
-    void addItemTooltipTranslation(Locales locale, String translationValue);
+    Item.Properties getMcItemProperties();
     
-    void addItemCreativeModeTab(ResourceKey<CreativeModeTab> creativeModeTab);
-
 }

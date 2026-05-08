@@ -12,32 +12,36 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.normslabs.nlmc_core.items.abstracts.IItemDescriptor;
-import net.normslabs.nlmc_core.items.abstracts.IsFuelItem;
+import net.normslabs.nlmc_core.items.abstracts.ItemDescriptorV2;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public class NlmcShovelItem extends ShovelItem {
     
-    private final IItemDescriptor descriptor;
+    private final ItemDescriptorV2<?,?> descriptor;
     
-    public NlmcShovelItem(IItemDescriptor descriptor, Tier itemTier, float baseDamage, float baseAttackSpeed, Properties itemProperties) {
-        super(itemTier, baseDamage, baseAttackSpeed, itemProperties);
+    public NlmcShovelItem(ItemDescriptorV2<?,?> descriptor) {
+        super(descriptor.getToolProperties().getToolTier(),
+              descriptor.getToolProperties().getAttackDamage(),
+              descriptor.getToolProperties().getBaseAttackSpeed(),
+              descriptor.getMcItemProperties());
         this.descriptor = descriptor;
     }
     
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level worldLevel, List<Component> tooltipsList,
                                 TooltipFlag tooltipFlag) {
-        tooltipsList.add(Component.translatable(this.descriptor.getTooltipTranslationKey()));
+        this.descriptor.getTooltipDictionaryKeys().forEach((key) -> {
+            tooltipsList.add(Component.translatable(key));
+        });
         super.appendHoverText(itemStack, worldLevel, tooltipsList, tooltipFlag);
     }
     
     @Override
     public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
-        if (this.descriptor instanceof IsFuelItem) {
-            return ((IsFuelItem) this.descriptor).getFuelProperties().getBurnTimeInTicks();
+        if (this.descriptor.isFuel()) {
+            return this.descriptor.getFuelProperties().getBurnTimeInTicks();
         }
         return 0;
     }

@@ -11,7 +11,7 @@ package net.normslabs.nlmc_core.fluids;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.registries.RegisterEvent;
 import net.normslabs.nlmc_core.infrastructure.NlmcRegistrar;
-import net.normslabs.nlmc_core.abstracts.AbstractRegistrar;
+import net.normslabs.nlmc_core.infrastructure.abstracts.AbstractRegistrar;
 
 public class FluidRegistrar extends AbstractRegistrar {
     

@@ -14,7 +14,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.registries.RegisterEvent;
-import net.normslabs.nlmc_core.abstracts.AbstractRegistrar;
+import net.normslabs.nlmc_core.infrastructure.abstracts.AbstractRegistrar;
 import net.normslabs.nlmc_core.infrastructure.NlmcRegistrar;
 
 import java.util.HashMap;

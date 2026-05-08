@@ -12,17 +12,11 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.registries.RegisterEvent;
-import net.minecraftforge.registries.RegistryObject;
 import net.normslabs.nlmc_core.abstracts.AbstractMcObjectRegistrar;
-import net.normslabs.nlmc_core.abstracts.AbstractRegistrar;
 import net.normslabs.nlmc_core.creativetabs.abstracts.ICreativeTabDescriptor;
 import net.normslabs.nlmc_core.infrastructure.NlmcRegistrar;
-import net.normslabs.nlmc_core.abstracts.IRegistrar;
-import net.normslabs.nlmc_core.infrastructure.NlmcRegistryEntry;
 
 public class CreativeTabsRegistrar extends AbstractMcObjectRegistrar<CreativeModeTab, ICreativeTabDescriptor> {
     

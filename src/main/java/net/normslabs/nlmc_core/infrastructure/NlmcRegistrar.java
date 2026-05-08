@@ -22,6 +22,7 @@ import net.normslabs.nlmc_core.items.tiers.ToolTiersRegistrar;
 import net.normslabs.nlmc_core.tags.NlmcBlockTagsRegistrar;
 import net.normslabs.nlmc_core.tags.NlmcFluidTagsRegistrar;
 import net.normslabs.nlmc_core.tags.NlmcItemTagsRegistrar;
+import net.normslabs.nlmc_core.tags.NlmcTagsManager;
 import net.normslabs.nlmc_core.translations.NlmcTranslationRegistrar;
 
 public class NlmcRegistrar {
@@ -29,9 +30,7 @@ public class NlmcRegistrar {
     private final String modNamespace;
     private final IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
     private final IEventBus modEventBus;
-    public final NlmcBlockTagsRegistrar BLOCK_TAGS;
-    public final NlmcItemTagsRegistrar ITEM_TAGS;
-    public final NlmcFluidTagsRegistrar FLUID_TAGS;
+    public final NlmcTagsManager TAGS;
     public final NlmcTranslationRegistrar TRANSLATIONS;
     public final ToolTiersRegistrar TOOL_TIERS;
     public final CreativeTabsRegistrar CREATIVE_TABS;
@@ -43,7 +42,7 @@ public class NlmcRegistrar {
         this.modNamespace = modNamespace;
         this.modEventBus = modEventBus;
         
-        this.BLOCK_TAGS = new NlmcBlockTagsRegistrar(this);
+        this.TAGS = new NlmcTagsManager(this);
         this.TRANSLATIONS = new NlmcTranslationRegistrar(this);
         this.TOOL_TIERS = new ToolTiersRegistrar(this);
         this.CREATIVE_TABS = new CreativeTabsRegistrar(this);

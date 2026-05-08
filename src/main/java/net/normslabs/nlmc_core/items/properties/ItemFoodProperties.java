@@ -8,30 +8,141 @@
 package net.normslabs.nlmc_core.items.properties;
 
 
-import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.normslabs.nlmc_core.abstracts.BuildableV3;
+import net.normslabs.nlmc_core.abstracts.BuilderV3;
+import net.normslabs.nlmc_core.items.abstracts.ItemDescriptorV2;
+import net.normslabs.nlmc_core.exceptions.ValidationException;
 
-public class ItemFoodProperties {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Supplier;
+
+public class ItemFoodProperties extends BuildableV3<ItemFoodProperties, ItemFoodProperties.Builder> {
+    private final ItemDescriptorV2<?,?,?> parentDescriptor;
     private int nutrition;
     private float saturationModifier;
     private boolean isAlwaysEatable;
     private boolean isMeat;
     private boolean isFast;
+    private final List<Supplier<MobEffectInstance>> effects;
     
-    public Item.Properties applyTo(Item.Properties properties) {
-        FoodProperties.Builder builder = new FoodProperties.Builder();
-        builder.nutrition(this.nutrition);
-        builder.saturationMod(this.saturationModifier);
-        if (this.isAlwaysEatable) {
-            builder.alwaysEat();
+    public ItemFoodProperties(ItemDescriptorV2<?,?,?> parentDescriptor) {
+        this.parentDescriptor = parentDescriptor;
+        this.nutrition = Integer.MIN_VALUE;
+        this.saturationModifier = Float.MIN_VALUE;
+        this.isMeat = false;
+        this.isFast = false;
+        this.isAlwaysEatable = true;
+        this.effects = new ArrayList<>();
+    }
+    
+    @Override
+    public void validateForBuild() {
+        if (this.nutrition == Integer.MIN_VALUE) {
+            throw new ValidationException("ItemFoodProperties nutrition value must be set.");
         }
-        if (this.isMeat) {
-            builder.meat();
+        if (this.saturationModifier == Float.MIN_VALUE) {
+            throw new ValidationException("ItemFoodProperties saturation modifier value must be set.");
         }
-        if (this.isFast) {
-            builder.fast();
+    }
+    
+    @Override
+    public Builder getBuilder() {
+        return new Builder(this);
+    }
+    
+    @Override
+    public void onBuild() {
+    
+    }
+    
+    
+    public int getNutrition() {
+        return this.nutrition;
+    }
+    
+    public float getSaturationModifier() {
+        return this.saturationModifier;
+    }
+    
+    public boolean alwaysEatable() {
+        return this.isAlwaysEatable;
+    }
+    
+    public boolean isFast() {
+        return this.isFast;
+    }
+    
+    public boolean isMeat() {
+        return this.isMeat;
+    }
+    
+    public List<Supplier<MobEffectInstance>> getEffects() {
+        return this.effects;
+    }
+    
+    
+    protected void setNutrition(int nutrition) {
+        this.nutrition = nutrition;
+    }
+    
+    protected void setSaturationModifier(float saturationModifier) {
+        this.saturationModifier = saturationModifier;
+    }
+    
+    protected void setAlwaysEatable(boolean alwaysEatable) {
+        this.isAlwaysEatable = alwaysEatable;
+    }
+    
+    protected void setIsFast(boolean fast) {
+        this.isFast = fast;
+    }
+    
+    protected void setIsMeat(boolean meat) {
+        this.isMeat = meat;
+    }
+    
+    protected void addEffect(Supplier<MobEffectInstance> effect) {
+        this.effects.add(effect);
+    }
+    
+    
+    public class Builder extends BuilderV3<ItemFoodProperties.Builder, ItemFoodProperties> {
+        
+        public Builder(ItemFoodProperties initialBuildable) {
+            super(initialBuildable);
         }
-        properties.food(builder.build());
-        return properties;
+        
+        
+        public Builder setNutrition(int nutrition) {
+            this.buildable.nutrition = nutrition;
+            return this.self();
+        }
+        
+        public Builder setSaturationModifier(float saturationModifier) {
+            this.buildable.saturationModifier = saturationModifier;
+            return this.self();
+        }
+        
+        public Builder setAlwaysEatable(boolean alwaysEatable) {
+            this.buildable.isAlwaysEatable = alwaysEatable;
+            return this.self();
+        }
+        
+        public Builder setIsFast(boolean fast) {
+            this.buildable.isFast = fast;
+            return this.self();
+        }
+        
+        public Builder setIsMeat(boolean meat) {
+            this.buildable.isMeat = meat;
+            return this.self();
+        }
+        
+        public Builder addEffect(Supplier<MobEffectInstance> effect) {
+            this.buildable.effects.add(effect);
+            return this.self();
+        }
     }
 }
