@@ -10,16 +10,9 @@ package net.normslabs.nlmc_core.abstracts;
 
 public abstract class AbstractDescriptor<
         TSelf extends AbstractDescriptor<TSelf, TBuilder>,
-        TBuilder extends AbstractDescriptor<TSelf, TBuilder>.Builder>
-        extends BuildableV3<TSelf, TBuilder>
+        TBuilder extends Builder<TBuilder, TSelf>>
+        extends Buildable<TSelf, TBuilder>
         implements IDescriptor<TSelf, TBuilder> {
     
-    public class Builder extends BuilderV3<TBuilder, TSelf> {
-        
-        protected Builder(TSelf initialBuildable) {
-            super(initialBuildable);
-        }
-        
-    }
     
 }

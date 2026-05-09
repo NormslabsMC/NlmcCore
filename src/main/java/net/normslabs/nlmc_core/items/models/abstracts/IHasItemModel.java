@@ -8,9 +8,9 @@
 package net.normslabs.nlmc_core.items.models.abstracts;
 
 
-import net.normslabs.nlmc_core.abstracts.IBuilderV3;
-import net.normslabs.nlmc_core.abstracts.IHasModelV2;
-import net.normslabs.nlmc_core.abstracts.IModelV2;
+import net.normslabs.nlmc_core.abstracts.IBuilder;
+import net.normslabs.nlmc_core.abstracts.IHasModel;
+import net.normslabs.nlmc_core.abstracts.IModel;
 import net.normslabs.nlmc_core.rendering.NlmcItemColor;
 
 /**
@@ -20,9 +20,9 @@ import net.normslabs.nlmc_core.rendering.NlmcItemColor;
  * @author Marc-Eric Boury (TheNorm24) <webmaster@normslabs.net>
  * @since 2026-05-04 02:52
  */
-public interface IHasItemModelV2<
-        TModel extends IModelV2<TModel, TModelBuilder, NlmcItemColor>,
-        TModelBuilder extends IBuilderV3<TModelBuilder, TModel>>
-        extends IHasModelV2<TModel, TModelBuilder, NlmcItemColor> {
+public interface IHasItemModel<
+        TModel extends IModel<TModel, TModelBuilder, NlmcItemColor>,
+        TModelBuilder extends IBuilder<TModelBuilder, TModel>>
+        extends IHasModel<TModel, TModelBuilder, NlmcItemColor> {
     
 }

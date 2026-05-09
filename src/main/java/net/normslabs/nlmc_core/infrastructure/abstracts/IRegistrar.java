@@ -9,14 +9,12 @@ package net.normslabs.nlmc_core.infrastructure.abstracts;
 
 
 import net.normslabs.nlmc_core.abstracts.IRegistrable;
-import net.normslabs.nlmc_core.infrastructure.NlmcRegistrar;
-import net.normslabs.nlmc_core.infrastructure.NlmcRegistryV3;
+import net.normslabs.nlmc_core.infrastructure.NlmcRegistry;
 
-public interface IRegistrar<TMcObject, TRegistrable extends IRegistrable<? extends TMcObject>> {
+public interface IRegistrar<TRegistrable extends IRegistrable<? extends TRegistrable, ?, ?, ?>>
+        extends IManager {
     
-    NlmcRegistrar getNlmcRegistrar();
-    
-    NlmcRegistryV3<TMcObject, TRegistrable> getNlmcRegistry();
+    NlmcRegistry<TRegistrable> getNlmcRegistry();
     
     <T extends TRegistrable> T register(T descriptor);
     

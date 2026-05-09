@@ -9,8 +9,8 @@ package net.normslabs.nlmc_core.items.models.abstracts;
 
 
 import net.minecraft.resources.ResourceLocation;
-import net.normslabs.nlmc_core.abstracts.BuildableV3;
-import net.normslabs.nlmc_core.abstracts.BuilderV3;
+import net.normslabs.nlmc_core.abstracts.Buildable;
+import net.normslabs.nlmc_core.abstracts.Builder;
 import net.normslabs.nlmc_core.rendering.NlmcItemColor;
 import net.normslabs.nlmc_core.rendering.RendererTypes;
 import net.normslabs.nlmc_core.rendering.Texture;
@@ -21,8 +21,8 @@ import java.util.Map;
 public abstract class ItemModel<
         TSelf extends ItemModel<TSelf, TBuilder>,
         TBuilder extends ItemModel<TSelf, TBuilder>.ItemModelBuilder>
-        extends BuildableV3<TSelf, TBuilder>
-        implements IItemModelV2<TSelf, TBuilder> {
+        extends Buildable<TSelf, TBuilder>
+        implements IItemModel<TSelf, TBuilder> {
     
     private int nextTextureLayer = 0;
     private RendererTypes renderer;
@@ -77,7 +77,7 @@ public abstract class ItemModel<
         this.nextTextureLayer++;
     }
     
-    public class ItemModelBuilder extends BuilderV3<TBuilder, TSelf> {
+    public class ItemModelBuilder extends Builder<TBuilder, TSelf> {
         
         public ItemModelBuilder(TSelf initialBuildable) {
             super(initialBuildable);

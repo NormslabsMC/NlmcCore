@@ -13,8 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.normslabs.nlmc_core.abstracts.IModelV2;
-import net.normslabs.nlmc_core.items.abstracts.ItemDescriptorV2;
+import net.normslabs.nlmc_core.abstracts.IModel;
 import net.normslabs.nlmc_core.items.models.CubeTopItemModel;
 import net.normslabs.nlmc_core.items.models.CustomCubeItemModel;
 import net.normslabs.nlmc_core.items.models.GenericItemModel;
@@ -43,9 +42,9 @@ public class NlmcItemModelManager extends ItemModelProvider {
         this.parentRegistrar.getNlmcRegistry().values().forEach(this::buildModelFor);
     }
     
-    private void buildModelFor(ItemDescriptorV2<?, ?, ?> itemDescriptor) {
+    private void buildModelFor(ItemDescriptor<?, ?, ?> itemDescriptor) {
         String itemIdentifier = itemDescriptor.getIdentifier();
-        IModelV2<?, ?, ?> modelDescriptor = itemDescriptor.getModelDescriptor();
+        IModel<?, ?, ?> modelDescriptor = itemDescriptor.getModelDescriptor();
         
         if (modelDescriptor instanceof GenericItemModel) {
             this.simpleItem(itemIdentifier, (GenericItemModel) modelDescriptor);

@@ -9,20 +9,19 @@ package net.normslabs.nlmc_core.items.properties;
 
 
 import net.minecraft.world.item.Tier;
-import net.normslabs.nlmc_core.abstracts.BuildableV3;
-import net.normslabs.nlmc_core.abstracts.BuilderV3;
-import net.normslabs.nlmc_core.items.abstracts.ItemDescriptorV2;
+import net.normslabs.nlmc_core.abstracts.Buildable;
+import net.normslabs.nlmc_core.items.ItemDescriptor;
 import net.normslabs.nlmc_core.items.enums.ToolTypes;
 
-public class ItemToolProperties extends BuildableV3<ItemToolProperties, ItemToolProperties.Builder> {
-    private final ItemDescriptorV2<?,?,?> parentDescriptor;
+public class ItemToolProperties extends Buildable<ItemToolProperties, ItemToolProperties.Builder> {
+    private final ItemDescriptor<?,?,?> parentDescriptor;
     private ToolTypes toolType;
     private Tier toolTier;
     private int defaultDurability = Integer.MIN_VALUE;
     private float attackDamage = Float.MIN_VALUE;
     private float baseAttackSpeed = Float.MIN_VALUE;
     
-    public ItemToolProperties(ItemDescriptorV2<?,?,?> parentDescriptor) {
+    public ItemToolProperties(ItemDescriptor<?,?,?> parentDescriptor) {
         this.parentDescriptor = parentDescriptor;
     }
     
@@ -92,7 +91,7 @@ public class ItemToolProperties extends BuildableV3<ItemToolProperties, ItemTool
     }
     
     
-    public class Builder extends BuilderV3<Builder, ItemToolProperties> {
+    public class Builder extends net.normslabs.nlmc_core.abstracts.Builder<Builder, ItemToolProperties> {
         
         public Builder(ItemToolProperties initialBuildable) {
             super(initialBuildable);

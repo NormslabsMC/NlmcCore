@@ -17,19 +17,21 @@ import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.registries.RegisterEvent;
 import net.normslabs.nlmc_core.abstracts.AbstractMcObjectRegistrar;
+import net.normslabs.nlmc_core.abstracts.AbstractTooltippedRegistrable;
 import net.normslabs.nlmc_core.blocks.abstracts.IBlockDescriptor;
 import net.normslabs.nlmc_core.infrastructure.NlmcRegistrar;
+import net.normslabs.nlmc_core.infrastructure.abstracts.AbstractDeferredRegistrar;
 import net.normslabs.nlmc_core.rendering.NlmcBlockColor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class BlockRegistrar extends AbstractMcObjectRegistrar<Block, IBlockDescriptor> {
+public class BlockRegistrar extends AbstractDeferredRegistrar<Block, Block> {
     private final HashMap<NlmcBlockColor, List<IBlockDescriptor>> BLOCK_COLOR_MAP = new HashMap<>();
     
     public BlockRegistrar(NlmcRegistrar modRegistrar) {
-        super(modRegistrar);
+        super(modRegistrar, Registries.BLOCK);
     }
     
     @Override

@@ -22,10 +22,10 @@ import java.util.Map;
  * @author Marc-Eric Boury (TheNorm24) <webmaster@normslabs.net>
  * @since 2026-05-04 01:56
  */
-public interface IModelV2<
-        TSelf extends IModelV2<TSelf, TBuilder, TObjectColor>,
-        TBuilder extends IBuilderV3<TBuilder, TSelf>,
-        TObjectColor extends IObjectColor> extends IBuildableV3<TSelf, TBuilder> {
+public interface IModel<
+        TSelf extends IModel<TSelf, TBuilder, TObjectColor>,
+        TBuilder extends IBuilder<TBuilder, TSelf>,
+        TObjectColor extends IObjectColor> extends IBuildable<TSelf, TBuilder> {
     
     /**
      * Returns the renderer type for the model as an {@link RendererTypes} enum value.

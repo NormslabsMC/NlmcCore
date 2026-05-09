@@ -12,17 +12,17 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.function.Consumer;
 
-public abstract class BuildableV3<
-        TSelf extends BuildableV3<TSelf, TBuilder>,
-        TBuilder extends BuilderV3<TBuilder, TSelf>>
+public abstract class Buildable<
+        TSelf extends Buildable<TSelf, TBuilder>,
+        TBuilder extends Builder<TBuilder, TSelf>>
         extends AbstractSelfReferencing<TSelf>
-        implements IBuildableV3<TSelf, TBuilder> {
+        implements IBuildable<TSelf, TBuilder> {
     
-    private boolean isBuilt;
-    private final Queue<Consumer<TSelf>> preBuildActions;
-    private final Queue<Consumer<TSelf>> postBuildActions;
+    protected boolean isBuilt;
+    protected final Queue<Consumer<TSelf>> preBuildActions;
+    protected final Queue<Consumer<TSelf>> postBuildActions;
     
-    protected BuildableV3() {
+    protected Buildable() {
         this.preBuildActions = new ArrayDeque<>();
         this.postBuildActions = new ArrayDeque<>();
         this.isBuilt = false;

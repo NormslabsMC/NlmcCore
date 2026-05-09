@@ -9,17 +9,16 @@ package net.normslabs.nlmc_core.items.properties;
 
 
 import net.minecraft.world.effect.MobEffectInstance;
-import net.normslabs.nlmc_core.abstracts.BuildableV3;
-import net.normslabs.nlmc_core.abstracts.BuilderV3;
-import net.normslabs.nlmc_core.items.abstracts.ItemDescriptorV2;
+import net.normslabs.nlmc_core.abstracts.Buildable;
+import net.normslabs.nlmc_core.items.ItemDescriptor;
 import net.normslabs.nlmc_core.exceptions.ValidationException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class ItemFoodProperties extends BuildableV3<ItemFoodProperties, ItemFoodProperties.Builder> {
-    private final ItemDescriptorV2<?,?,?> parentDescriptor;
+public class ItemFoodProperties extends Buildable<ItemFoodProperties, ItemFoodProperties.Builder> {
+    private final ItemDescriptor<?,?,?> parentDescriptor;
     private int nutrition;
     private float saturationModifier;
     private boolean isAlwaysEatable;
@@ -27,7 +26,7 @@ public class ItemFoodProperties extends BuildableV3<ItemFoodProperties, ItemFood
     private boolean isFast;
     private final List<Supplier<MobEffectInstance>> effects;
     
-    public ItemFoodProperties(ItemDescriptorV2<?,?,?> parentDescriptor) {
+    public ItemFoodProperties(ItemDescriptor<?,?,?> parentDescriptor) {
         this.parentDescriptor = parentDescriptor;
         this.nutrition = Integer.MIN_VALUE;
         this.saturationModifier = Float.MIN_VALUE;
@@ -108,7 +107,7 @@ public class ItemFoodProperties extends BuildableV3<ItemFoodProperties, ItemFood
     }
     
     
-    public class Builder extends BuilderV3<ItemFoodProperties.Builder, ItemFoodProperties> {
+    public class Builder extends net.normslabs.nlmc_core.abstracts.Builder<Builder, ItemFoodProperties> {
         
         public Builder(ItemFoodProperties initialBuildable) {
             super(initialBuildable);

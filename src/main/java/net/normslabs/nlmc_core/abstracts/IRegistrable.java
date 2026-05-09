@@ -8,9 +8,11 @@
 package net.normslabs.nlmc_core.abstracts;
 
 
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
+import net.normslabs.nlmc_core.infrastructure.abstracts.IRegistrar;
 
 import java.util.function.Supplier;
 
@@ -25,7 +27,10 @@ import java.util.function.Supplier;
  * @author Marc-Eric Boury (TheNorm24) <webmaster@normslabs.net>
  * @since 2026-05-04 03:54
  */
-public interface IRegistrable<TNlmcType>
+public interface IRegistrable<
+        TSelf extends IRegistrable<TSelf, TRegistrar, TNlmcType>,
+        TRegistrar extends IRegistrar<? super TSelf>,
+        TNlmcType>
         extends Supplier<TNlmcType> {
     
     /**
@@ -104,11 +109,11 @@ public interface IRegistrable<TNlmcType>
      * is handled automatically by the NLMC platform.
      * <p>
      *
-     * @param forgeRegistry the forge {@link DeferredRegister} to register the registrable in.
-     * @return the forge {@link RegistryObject} returned by the registration.
+     * @param registrar the {@link IRegistrar} to register the registrable in.
+     * @return the registered {@link IRegistrable}.
      * @author Marc-Eric Boury (TheNorm24) <webmaster@normslabs.net>
      * @since 2026-05-04 23:27
      */
-    RegistryObject<TNlmcType> registerIn(DeferredRegister<? super TNlmcType> forgeRegistry);
+    TSelf registerIn(TRegistrar registrar);
     
 }

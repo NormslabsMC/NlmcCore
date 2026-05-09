@@ -10,7 +10,6 @@ package net.normslabs.nlmc_core.abstracts;
 
 import net.normslabs.nlmc_core.translations.Locales;
 import net.normslabs.nlmc_core.translations.TranslationDictionary;
-import net.normslabs.nlmc_core.translations.TranslationDictionaryV2;
 
 import java.util.Map;
 
@@ -28,14 +27,14 @@ public interface ITranslatable {
      * <strong>DO NOT CALL THIS METHOD YOURSELF.</strong> The registration process
      * is handled automatically by the NLMC platform.
      * <p>
-     * Returns the object's translation values in the form of a {@link TranslationDictionaryV2}.
+     * Returns the object's translation values in the form of a {@link TranslationDictionary}.
      * Used by the language provider to generate the language data.
      *
      * @return the object's translation values.
      * @author Marc-Eric Boury (TheNorm24) <webmaster@normslabs.net>
      * @since 2026-05-04 01:25
      */
-    TranslationDictionaryV2 getTranslations();
+    TranslationDictionary getTranslations();
     
     /**
      * Adds a generic translation value to the object based on the locale, key and value.
@@ -88,7 +87,7 @@ public interface ITranslatable {
     void addTranslations(Map<String, Map<Locales, String>> translationsMap);
     
     /**
-     * Adds generic translation values to the object based on a {@link TranslationDictionaryV2} object.<br>
+     * Adds generic translation values to the object based on a {@link TranslationDictionary} object.<br>
      * These translations have no effect in and of themselves and need to be handled manually.<br>
      * <strong>For item/block name translations, use
      * {@link IHasDisplayedName#addDisplayNameTranslation(Locales, String) addDisplayNameTranslation(Locales, String)}
@@ -100,6 +99,6 @@ public interface ITranslatable {
      * @author Marc-Eric Boury (TheNorm24) <webmaster@normslabs.net>
      * @since 2026-05-04 01:43
      */
-    void addTranslations(TranslationDictionaryV2 translationsDictionary);
+    void addTranslations(TranslationDictionary translationsDictionary);
     
 }

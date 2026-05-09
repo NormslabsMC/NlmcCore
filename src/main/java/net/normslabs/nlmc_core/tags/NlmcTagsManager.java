@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.RegisterEvent;
 import net.normslabs.nlmc_core.infrastructure.abstracts.AbstractRegistrar;
 import net.normslabs.nlmc_core.infrastructure.NlmcRegistrar;
@@ -42,7 +43,6 @@ public class NlmcTagsManager extends AbstractRegistrar {
     
     public NlmcTagsManager(NlmcRegistrar nlmcRegistrar) {
         super(nlmcRegistrar);
-        this.getNlmcRegistrar().getModEventBus().addListener(this::onDatagen);
         this.itemTagAssociations = new HashMap<>();
         this.tagItemTagAssociations = new HashMap<>();
         this.blockTagAssociations = new HashMap<>();
@@ -50,6 +50,11 @@ public class NlmcTagsManager extends AbstractRegistrar {
         this.fluidTagAssociations = new HashMap<>();
         this.tagFluidTagAssociations = new HashMap<>();
         
+    }
+    
+    @Override
+    public void initialize(IEventBus modEventBus, IEventBus forgeEventBus) {
+        modEventBus.addListener(this::onDatagen);
     }
     
     public Map<Supplier<? extends Block>, List<TagKey<Block>>> getBlockTagAssociations() {
@@ -140,11 +145,6 @@ public class NlmcTagsManager extends AbstractRegistrar {
             this.tagFluidTagAssociations.computeIfAbsent(tagToAdd, k -> new ArrayList<>()).add(tag);
         });
         return this;
-    }
-    
-    @Override
-    protected void onRegister(RegisterEvent event) {
-    
     }
     
     public void onDatagen(final GatherDataEvent event) {

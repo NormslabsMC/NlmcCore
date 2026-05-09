@@ -58,7 +58,7 @@ public class NlmcCurrencies {
                                          .configureModel((modelBuilder)
                                                                  -> modelBuilder.addTextureLayer(currency.getTextureLoc())
                                                                                 .build());
-            currency.getLocalizedNames().forEach(itemBuilder::addDisplayNameTranslation);
+            currency.getLocalizedNames().forEach(itemBuilder::displayName);
         }
     }
 }

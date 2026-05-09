@@ -11,9 +11,9 @@ package net.normslabs.nlmc_core.abstracts;
 import java.util.Queue;
 import java.util.function.Consumer;
 
-public interface IBuildableV3<
-        TSelf extends IBuildableV3<TSelf, TBuilder>,
-        TBuilder extends IBuilderV3<TBuilder, TSelf>>
+public interface IBuildable<
+        TSelf extends IBuildable<TSelf, TBuilder>,
+        TBuilder extends IBuilder<TBuilder, TSelf>>
         extends ISelfReferencing<TSelf> {
     
     boolean isBuilt();

@@ -12,16 +12,16 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.normslabs.nlmc_core.items.abstracts.ItemDescriptorV2;
+import net.normslabs.nlmc_core.items.ItemDescriptor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public class NlmcHoeItem extends HoeItem {
     
-    private final ItemDescriptorV2<?,?> descriptor;
+    private final ItemDescriptor<?,?> descriptor;
     
-    public NlmcHoeItem(ItemDescriptorV2<?,?> descriptor) {
+    public NlmcHoeItem(ItemDescriptor<?,?> descriptor) {
         super(descriptor.getToolProperties().getToolTier(),
               (int) descriptor.getToolProperties().getAttackDamage(),
               descriptor.getToolProperties().getBaseAttackSpeed(),

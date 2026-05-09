@@ -13,11 +13,13 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraftforge.registries.DeferredRegister;
 import net.normslabs.nlmc_core.abstracts.IRegistrable;
 
-public interface IDeferredRegistrar<TMcObject, TRegistrable extends IRegistrable<? extends TMcObject>>
-        extends IRegistrar<TMcObject, TRegistrable> {
+public interface IDeferredRegistrar<
+        TRegistrable extends IRegistrable<? extends TRegistrable, ?, ? extends TMcType, TMcType>,
+        TMcType>
+        extends IRegistrar<TRegistrable> {
     
-    DeferredRegister<TMcObject> getDeferredRegister();
+    DeferredRegister<TMcType> getDeferredRegister();
     
-    ResourceKey<Registry<TMcObject>> getRegistryKey();
+    ResourceKey<Registry<TMcType>> getRegistryKey();
     
 }

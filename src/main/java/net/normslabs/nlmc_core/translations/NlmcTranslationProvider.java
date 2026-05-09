@@ -17,19 +17,23 @@ import java.util.Map;
 
 public class NlmcTranslationProvider extends LanguageProvider {
     private final Map<String, String> translations;
-    private final NlmcRegistrar parentRegistrar;
-    private final String locale;
+    private final NlmcRegistrar nlmcRegistrar;
+    private final Locales locale;
     
-    public NlmcTranslationProvider(NlmcRegistrar parentRegistrar, PackOutput output, String modid, String locale) {
-        super(output, modid, locale.toLowerCase());
-        this.parentRegistrar = parentRegistrar;
-        this.locale = locale.toLowerCase();
+    public NlmcTranslationProvider(NlmcRegistrar nlmcRegistrar, Locales locale, PackOutput output) {
+        super(output, nlmcRegistrar.getModNamespace(), locale.getCode().toLowerCase());
+        this.nlmcRegistrar = nlmcRegistrar;
+        this.locale = locale;
         this.translations = new HashMap<>();
+    }
+    
+    public Locales getLocale() {
+        return this.locale;
     }
     
     @Override
     protected void addTranslations() {
-    
+        this.translations.forEach(this::add);
     }
     
     public void registerTranslation(String translationKey, String translationValue) {

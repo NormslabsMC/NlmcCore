@@ -12,33 +12,33 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TranslationDictionary {
-    private final Map<Locales, Map<String, String>> internalMap;
+    private final Map<String, Map<Locales, String>> internalMap;
     
     public TranslationDictionary() {
         this.internalMap = new HashMap<>();
     }
     
     public void addTranslation(Locales locale, String translationKey, String translationValue) {
-        if (!this.internalMap.containsKey(locale)) {
-            this.internalMap.put(locale, new HashMap<>());
+        if (!this.internalMap.containsKey(translationKey)) {
+            this.internalMap.put(translationKey, new HashMap<>());
         }
-        this.internalMap.get(locale).put(translationKey, translationValue);
+        this.internalMap.get(translationKey).put(locale, translationValue);
     }
     
     public void addTranslations(Locales locale, Map<String, String> translations) {
         translations.forEach((key, value) -> this.addTranslation(locale, key, value));
     }
     
-    public void addTranslations(Map<Locales, Map<String, String>> map) {
-        map.forEach((locale, subMap) ->
-                            subMap.forEach((key, value) -> this.addTranslation(locale, key, value)));
+    public void addTranslations(Map<String, Map<Locales, String>> map) {
+        map.forEach((key, subMap) ->
+                            subMap.forEach((locale, value) -> this.addTranslation(locale, key, value)));
     }
     
     public void merge(TranslationDictionary dictionary) {
         this.addTranslations(dictionary.getTranslations());
     }
     
-    public Map<Locales, Map<String, String>> getTranslations() {
+    public Map<String, Map<Locales, String>> getTranslations() {
         return this.internalMap;
     }
 }

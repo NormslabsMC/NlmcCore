@@ -13,29 +13,20 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 import net.normslabs.nlmc_core.abstracts.AbstractMcObjectRegistrar;
 import net.normslabs.nlmc_core.creativetabs.abstracts.ICreativeTabDescriptor;
 import net.normslabs.nlmc_core.infrastructure.NlmcRegistrar;
+import net.normslabs.nlmc_core.infrastructure.abstracts.AbstractDeferredRegistrar;
 
-public class CreativeTabsRegistrar extends AbstractMcObjectRegistrar<CreativeModeTab, ICreativeTabDescriptor> {
+public class CreativeTabsRegistrar extends AbstractDeferredRegistrar<CreativeTabDescriptor, CreativeModeTab> {
     
-    public CreativeTabsRegistrar(NlmcRegistrar modRegistrar) {
-        super(modRegistrar);
+    public CreativeTabsRegistrar(NlmcRegistrar nlmcRegistrar) {
+        super(nlmcRegistrar, Registries.CREATIVE_MODE_TAB);
     }
     
-    @Override
-    protected ResourceKey<Registry<CreativeModeTab>> getRegistryKey() {
-        return Registries.CREATIVE_MODE_TAB;
-    }
-    
-    @Override
-    protected void onRegister(RegisterEvent event) {
-    
-    }
-    
-    @Override
-    protected void onDatagen(GatherDataEvent event) {
+    protected void onDatagen(final GatherDataEvent event) {
     
     }
     

@@ -8,10 +8,6 @@
 package net.normslabs.nlmc_core.abstracts;
 
 
-import net.minecraft.resources.ResourceLocation;
-
-import java.util.function.Supplier;
-
 /**
  * Interface for buildable descriptor objects that describe minecraft/forge internal objects.
  *
@@ -22,7 +18,7 @@ import java.util.function.Supplier;
  */
 public interface IDescriptor<
         TSelf extends IDescriptor<TSelf, TBuilder>,
-        TBuilder extends IBuilderV3<TBuilder, TSelf>>
-        extends IBuildableV3<TSelf, TBuilder> {
+        TBuilder extends IBuilder<TBuilder, TSelf>>
+        extends IBuildable<TSelf, TBuilder> {
     
 }

@@ -25,16 +25,16 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
-import net.normslabs.nlmc_core.items.abstracts.ItemDescriptorV2;
+import net.normslabs.nlmc_core.items.ItemDescriptor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public class NlmcFluidContainerItem extends Item {
-    protected final ItemDescriptorV2<?,?> descriptor;
+    protected final ItemDescriptor<?,?> descriptor;
     private final int capacity;
     
-    public NlmcFluidContainerItem(ItemDescriptorV2<?,?> descriptor, int capacity) {
+    public NlmcFluidContainerItem(ItemDescriptor<?,?> descriptor, int capacity) {
         super(descriptor.getMcItemProperties());
         this.descriptor = descriptor;
         this.capacity = capacity;

@@ -10,150 +10,138 @@ package net.normslabs.nlmc_core.infrastructure;
 
 import net.minecraft.resources.ResourceLocation;
 import net.normslabs.nlmc_core.abstracts.IRegistrable;
+import net.normslabs.nlmc_core.infrastructure.abstracts.IRegistrar;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class NlmcRegistry<TMcObject, TNlmcDescriptor extends IRegistrable<TMcObject>> implements Map<ResourceLocation, NlmcRegistryEntry<TMcObject, TNlmcDescriptor>> {
-    private final Map<ResourceLocation, NlmcRegistryEntry<TMcObject, TNlmcDescriptor>> internalMap;
+/**
+ * Custom {@link Map}-like data storage type that represent a registry for
+ * the object descriptors registered in a {@link IRegistrar registrar}.
+ *
+ * @param <TRegistrable> The type of the {@link IRegistrable} objects stored in this registry.
+ * @author Marc-Eric Boury (TheNorm24) <webmaster@normslabs.net>
+ * @since 2026-05-04 04:17
+ */
+public class NlmcRegistry<TRegistrable extends IRegistrable<? extends TRegistrable, ?, ?>> {
+    
+    private final Map<ResourceLocation, TRegistrable> internalMap;
     
     public NlmcRegistry() {
         this.internalMap = new HashMap<>();
     }
     
-    public NlmcRegistry(Map<ResourceLocation, NlmcRegistryEntry<TMcObject, TNlmcDescriptor>> initialMap) {
+    public NlmcRegistry(Map<ResourceLocation, TRegistrable> initialMap) {
         this();
-        this.putAll(initialMap);
+        this.internalMap.putAll(initialMap);
     }
     
-    public NlmcRegistryEntry<TMcObject, TNlmcDescriptor> register(TNlmcDescriptor registrable) {
-        NlmcRegistryEntry<TMcObject, TNlmcDescriptor> entry = new NlmcRegistryEntry<>(registrable);
-        this.put(registrable.getResourceLocation(), entry);
-        return entry;
+    public void register(TRegistrable registrable) {
+        this.internalMap.put(registrable.getResourceLocation(), registrable);
     }
     
-    @Override
-    public int size() {
-        return this.internalMap.size();
+    public TRegistrable get(ResourceLocation resourceLocation) {
+        return this.internalMap.get(resourceLocation);
     }
     
-    @Override
+    public boolean containsKey(ResourceLocation key) {
+        return this.internalMap.containsKey(key);
+    }
+    
+    public boolean containsValue(TRegistrable registrable) {
+        return this.internalMap.containsValue(registrable);
+    }
+    
+    public ResourceLocation keyOf(TRegistrable registrable) {
+        for (Map.Entry<ResourceLocation, TRegistrable> entry : this.internalMap.entrySet()) {
+            if (entry.getValue() == registrable) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
+    
     public boolean isEmpty() {
         return this.internalMap.isEmpty();
     }
     
-    @Override
-    public boolean containsKey(Object o) {
-        return this.internalMap.containsKey(o);
+    public TRegistrable remove(ResourceLocation key) {
+        return this.internalMap.remove(key);
     }
     
-    @Override
-    public boolean containsValue(Object o) {
-        return this.internalMap.containsValue(o);
+    public TRegistrable remove(TRegistrable value) {
+        return this.internalMap.remove(this.keyOf(value));
     }
     
-    @Override
-    public NlmcRegistryEntry<TMcObject, TNlmcDescriptor> get(Object o) {
-        return this.internalMap.get(o);
-    }
-    
-    @Override
-    public @Nullable NlmcRegistryEntry<TMcObject, TNlmcDescriptor> put(ResourceLocation resourceLocation,
-                                                            NlmcRegistryEntry<TMcObject, TNlmcDescriptor> registryEntry) {
-        return this.internalMap.put(resourceLocation, registryEntry);
-    }
-    
-    @Override
-    public NlmcRegistryEntry<TMcObject, TNlmcDescriptor> remove(Object o) {
-        return this.internalMap.remove(o);
-    }
-    
-    @Override
-    public void putAll(@NotNull Map<? extends ResourceLocation, ? extends NlmcRegistryEntry<TMcObject, TNlmcDescriptor>> map) {
+    public void putAll(@NotNull Map<ResourceLocation, TRegistrable> map) {
         this.internalMap.putAll(map);
     }
     
-    @Override
     public void clear() {
         this.internalMap.clear();
     }
     
-    @Override
     public @NotNull Set<ResourceLocation> keySet() {
         return this.internalMap.keySet();
     }
     
-    @Override
-    public @NotNull Collection<NlmcRegistryEntry<TMcObject, TNlmcDescriptor>> values() {
+    public @NotNull Collection<TRegistrable> values() {
         return this.internalMap.values();
     }
     
-    @Override
-    public @NotNull Set<Entry<ResourceLocation, NlmcRegistryEntry<TMcObject, TNlmcDescriptor>>> entrySet() {
+    public @NotNull Set<Map.Entry<ResourceLocation, TRegistrable>> entrySet() {
         return this.internalMap.entrySet();
     }
     
-    @Override
-    public NlmcRegistryEntry<TMcObject, TNlmcDescriptor> getOrDefault(Object key, NlmcRegistryEntry<TMcObject, TNlmcDescriptor> defaultValue) {
-        return this.internalMap.getOrDefault((ResourceLocation) key, defaultValue);
+    public TRegistrable getOrDefault(ResourceLocation key) {
+        return this.internalMap.getOrDefault(key, null);
     }
     
-    @Override
-    public void forEach(BiConsumer<? super ResourceLocation, ? super NlmcRegistryEntry<TMcObject, TNlmcDescriptor>> action) {
+    public void forEach(BiConsumer<ResourceLocation, TRegistrable> action) {
         this.internalMap.forEach(action);
     }
     
-    @Override
     public void replaceAll(
-            BiFunction<? super ResourceLocation, ? super NlmcRegistryEntry<TMcObject, TNlmcDescriptor>, ? extends NlmcRegistryEntry<TMcObject, TNlmcDescriptor>> function) {
+            BiFunction<ResourceLocation, TRegistrable, TRegistrable> function) {
         this.internalMap.replaceAll(function);
     }
     
-    @Override
-    public @Nullable NlmcRegistryEntry<TMcObject, TNlmcDescriptor> putIfAbsent(ResourceLocation key, NlmcRegistryEntry<TMcObject, TNlmcDescriptor> value) {
+    public @Nullable TRegistrable putIfAbsent(ResourceLocation key, TRegistrable value) {
         return this.internalMap.putIfAbsent(key, value);
     }
     
-    @Override
-    public boolean remove(Object key, Object value) {
-        return this.internalMap.remove(key, value);
-    }
-    
-    @Override
-    public boolean replace(ResourceLocation key, NlmcRegistryEntry<TMcObject, TNlmcDescriptor> oldValue, NlmcRegistryEntry<TMcObject, TNlmcDescriptor> newValue) {
+    public boolean replace(ResourceLocation key, TRegistrable oldValue, TRegistrable newValue) {
         return this.internalMap.replace(key, oldValue, newValue);
     }
     
-    @Override
-    public @Nullable NlmcRegistryEntry<TMcObject, TNlmcDescriptor> replace(ResourceLocation key, NlmcRegistryEntry<TMcObject, TNlmcDescriptor> value) {
+    public @Nullable TRegistrable replace(ResourceLocation key, TRegistrable value) {
         return this.internalMap.replace(key, value);
     }
     
-    @Override
-    public NlmcRegistryEntry<TMcObject, TNlmcDescriptor> computeIfAbsent(ResourceLocation key,
-                                                              @NotNull Function<? super ResourceLocation, ? extends NlmcRegistryEntry<TMcObject, TNlmcDescriptor>> mappingFunction) {
+    public TRegistrable computeIfAbsent(
+            ResourceLocation key, @NotNull Function<ResourceLocation, TRegistrable> mappingFunction) {
         return this.internalMap.computeIfAbsent(key, mappingFunction);
     }
     
-    @Override
-    public NlmcRegistryEntry<TMcObject, TNlmcDescriptor> computeIfPresent(ResourceLocation key,
-                                                               @NotNull BiFunction<? super ResourceLocation, ? super NlmcRegistryEntry<TMcObject, TNlmcDescriptor>, ? extends NlmcRegistryEntry<TMcObject, TNlmcDescriptor>> remappingFunction) {
+    public TRegistrable computeIfPresent(ResourceLocation key,
+                                                              @NotNull BiFunction<ResourceLocation, TRegistrable, TRegistrable> remappingFunction) {
         return this.internalMap.computeIfPresent(key, remappingFunction);
     }
     
-    @Override
-    public NlmcRegistryEntry<TMcObject, TNlmcDescriptor> compute(ResourceLocation key,
-                                                      @NotNull BiFunction<? super ResourceLocation, ? super @Nullable NlmcRegistryEntry<TMcObject, TNlmcDescriptor>, ? extends NlmcRegistryEntry<TMcObject, TNlmcDescriptor>> remappingFunction) {
+    public TRegistrable compute(ResourceLocation key,
+                                                     @NotNull BiFunction<ResourceLocation, TRegistrable, TRegistrable> remappingFunction) {
         return this.internalMap.compute(key, remappingFunction);
     }
     
-    @Override
-    public NlmcRegistryEntry<TMcObject, TNlmcDescriptor> merge(ResourceLocation key, @NotNull NlmcRegistryEntry<TMcObject, TNlmcDescriptor> value,
-                                                    @NotNull BiFunction<? super NlmcRegistryEntry<TMcObject, TNlmcDescriptor>, ? super NlmcRegistryEntry<TMcObject, TNlmcDescriptor>, ? extends NlmcRegistryEntry<TMcObject, TNlmcDescriptor>> remappingFunction) {
+    public TRegistrable merge(ResourceLocation key, @NotNull TRegistrable value,
+                                                    @NotNull BiFunction<TRegistrable, TRegistrable, TRegistrable> remappingFunction) {
         return this.internalMap.merge(key, value, remappingFunction);
     }
 }

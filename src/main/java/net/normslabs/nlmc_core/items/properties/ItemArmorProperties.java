@@ -9,18 +9,17 @@ package net.normslabs.nlmc_core.items.properties;
 
 
 import net.minecraft.world.item.Tier;
-import net.normslabs.nlmc_core.abstracts.BuildableV3;
-import net.normslabs.nlmc_core.abstracts.BuilderV3;
-import net.normslabs.nlmc_core.items.abstracts.ItemDescriptorV2;
+import net.normslabs.nlmc_core.abstracts.Buildable;
+import net.normslabs.nlmc_core.items.ItemDescriptor;
 import net.normslabs.nlmc_core.items.enums.ArmorTypes;
 
-public class ItemArmorProperties extends BuildableV3<ItemArmorProperties, ItemArmorProperties.Builder> {
-    private final ItemDescriptorV2<?,?,?> parentDescriptor;
+public class ItemArmorProperties extends Buildable<ItemArmorProperties, ItemArmorProperties.Builder> {
+    private final ItemDescriptor<?,?,?> parentDescriptor;
     private ArmorTypes armorType;
     private Tier armorTier;
     private int defaultDurability = Integer.MIN_VALUE;
     
-    public ItemArmorProperties(ItemDescriptorV2<?,?,?> parentDescriptor) {
+    public ItemArmorProperties(ItemDescriptor<?,?,?> parentDescriptor) {
         this.parentDescriptor = parentDescriptor;
     }
     
@@ -49,7 +48,7 @@ public class ItemArmorProperties extends BuildableV3<ItemArmorProperties, ItemAr
         return this.defaultDurability;
     }
     
-    public ItemDescriptorV2<?, ?, ?> getParentDescriptor() {
+    public ItemDescriptor<?, ?, ?> getParentDescriptor() {
         return this.parentDescriptor;
     }
     
@@ -75,7 +74,7 @@ public class ItemArmorProperties extends BuildableV3<ItemArmorProperties, ItemAr
         // nothing special to do here
     }
     
-    public class Builder extends BuilderV3<Builder, ItemArmorProperties> {
+    public class Builder extends net.normslabs.nlmc_core.abstracts.Builder<Builder, ItemArmorProperties> {
         
         public Builder(ItemArmorProperties initialBuildable) {
             super(initialBuildable);

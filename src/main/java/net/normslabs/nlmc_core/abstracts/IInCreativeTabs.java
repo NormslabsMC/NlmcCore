@@ -10,11 +10,8 @@ package net.normslabs.nlmc_core.abstracts;
 
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
-import net.normslabs.nlmc_core.translations.Locales;
-import net.normslabs.nlmc_core.translations.TranslationDictionary;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Interface for descriptor objects that can be displayed in creative mode tabs.
@@ -22,7 +19,7 @@ import java.util.Map;
  * @author Marc-Eric Boury (TheNorm24) <webmaster@normslabs.net>
  * @since 2026-05-04 02:35
  */
-public interface IInCreativeTabsV2 {
+public interface IInCreativeTabs {
     
     /**
      * Returns the list of creative tabs the object should be added to.

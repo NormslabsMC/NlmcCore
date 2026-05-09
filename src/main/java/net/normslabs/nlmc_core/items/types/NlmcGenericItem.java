@@ -14,15 +14,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.normslabs.nlmc_core.items.abstracts.ItemDescriptorV2;
+import net.normslabs.nlmc_core.items.ItemDescriptor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public class NlmcGenericItem extends Item {
     
-    protected final ItemDescriptorV2<?,?> descriptor;
-    public NlmcGenericItem(ItemDescriptorV2<?,?> descriptor) {
+    protected final ItemDescriptor<?,?> descriptor;
+    public NlmcGenericItem(ItemDescriptor<?,?> descriptor) {
         super(descriptor.getMcItemProperties());
         this.descriptor = descriptor;
     }

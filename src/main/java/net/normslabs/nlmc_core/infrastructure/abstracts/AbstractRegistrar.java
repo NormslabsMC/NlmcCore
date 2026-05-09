@@ -8,43 +8,34 @@
 package net.normslabs.nlmc_core.infrastructure.abstracts;
 
 
-import net.minecraftforge.data.event.GatherDataEvent;
-import net.minecraftforge.registries.RegisterEvent;
 import net.normslabs.nlmc_core.abstracts.IRegistrable;
 import net.normslabs.nlmc_core.infrastructure.NlmcRegistrar;
-import net.normslabs.nlmc_core.infrastructure.NlmcRegistryV3;
+import net.normslabs.nlmc_core.infrastructure.NlmcRegistry;
 
-public abstract class AbstractRegistrar<TMcObject, TRegistrable extends IRegistrable<? extends TMcObject>>
-        implements IRegistrar<TMcObject, TRegistrable> {
+public abstract class AbstractRegistrar<TRegistrable extends IRegistrable<? extends TRegistrable, ?, ?, ?>>
+        extends AbstractManager
+        implements IRegistrar<TRegistrable> {
     
-    protected NlmcRegistryV3<TMcObject, TRegistrable> nlmcRegistry;
-    protected final NlmcRegistrar modRegistrar;
+    protected NlmcRegistry<TRegistrable> nlmcRegistry;
     
-    protected AbstractRegistrar(NlmcRegistrar modRegistrar) {
-        this.modRegistrar = modRegistrar;
-        this.nlmcRegistry = new NlmcRegistryV3<>();
-        this.modRegistrar.getModEventBus().addListener(this::onRegister);
-        this.modRegistrar.getModEventBus().addListener(this::onDatagen);
+    protected AbstractRegistrar(NlmcRegistrar nlmcRegistrar) {
+        super(nlmcRegistrar);
+        this.nlmcRegistry = new NlmcRegistry<>();
     }
     
     @Override
-    public NlmcRegistrar getNlmcRegistrar() {
-        return this.modRegistrar;
-    }
-    
-    @Override
-    public NlmcRegistryV3<TMcObject, TRegistrable> getNlmcRegistry() {
+    public NlmcRegistry<TRegistrable> getNlmcRegistry() {
         return this.nlmcRegistry;
     }
     
     @Override
     public <T extends TRegistrable> T register(T descriptor) {
+        if (descriptor.isRegistered()) {
+            throw new IllegalStateException("Cannot register already registered descriptor: ["+descriptor.getClass().getSimpleName()+"] " + descriptor.getIdentifier());
+        }
         this.nlmcRegistry.register(descriptor);
+        descriptor.setIsRegistered(true);
         return descriptor;
     }
-    
-    protected abstract void onRegister(final RegisterEvent event);
-    
-    protected abstract void onDatagen(final GatherDataEvent event);
     
 }

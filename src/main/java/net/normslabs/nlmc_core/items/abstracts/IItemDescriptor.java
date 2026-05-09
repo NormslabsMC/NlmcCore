@@ -11,27 +11,29 @@ package net.normslabs.nlmc_core.items.abstracts;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.normslabs.nlmc_core.abstracts.*;
-import net.normslabs.nlmc_core.items.models.abstracts.IHasItemModelV2;
-import net.normslabs.nlmc_core.items.models.abstracts.IItemModelV2;
+import net.normslabs.nlmc_core.infrastructure.abstracts.IDeferredRegistrar;
+import net.normslabs.nlmc_core.items.models.abstracts.IHasItemModel;
+import net.normslabs.nlmc_core.items.models.abstracts.IItemModel;
 import net.normslabs.nlmc_core.items.properties.ItemArmorProperties;
 import net.normslabs.nlmc_core.items.properties.ItemFoodProperties;
 import net.normslabs.nlmc_core.items.properties.ItemFuelProperties;
 import net.normslabs.nlmc_core.items.properties.ItemToolProperties;
 
 public interface IItemDescriptor<
-        TSelf extends IItemDescriptor<TSelf, TBuilder, TModel, TModelBuilder, TNlmcType>,
-        TBuilder extends IBuilderV3<TBuilder, TSelf>,
-        TModel extends IItemModelV2<TModel, TModelBuilder>,
-        TModelBuilder extends IBuilderV3<TModelBuilder, TModel>,
-        TNlmcType extends Item>
+        TSelf extends IItemDescriptor<TSelf, TBuilder, TModel, TModelBuilder, TNlmcType, TRegistrar>,
+        TBuilder extends IBuilder<TBuilder, TSelf>,
+        TModel extends IItemModel<TModel, TModelBuilder>,
+        TModelBuilder extends IBuilder<TModelBuilder, TModel>,
+        TNlmcType extends Item,
+        TRegistrar extends IDeferredRegistrar<? super TSelf, Item>>
         extends IDescriptor<TSelf, TBuilder>,
-        IRegistrable<TNlmcType>,
-        IHasItemModelV2<TModel, TModelBuilder>,
+        IMcRegistrable<TSelf, TRegistrar, TNlmcType, Item>,
+        IHasItemModel<TModel, TModelBuilder>,
         IHasDisplayedName,
         IHasTooltips,
         ITaggable<Item>,
-        IBuildableV3<TSelf, TBuilder>,
-        IInCreativeTabsV2 {
+        IBuildable<TSelf, TBuilder>,
+        IInCreativeTabs {
     
     boolean isFood();
     boolean isFuel();

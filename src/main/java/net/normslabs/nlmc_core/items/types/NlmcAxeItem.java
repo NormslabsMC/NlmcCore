@@ -14,16 +14,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.normslabs.nlmc_core.items.abstracts.ItemDescriptorV2;
+import net.normslabs.nlmc_core.items.ItemDescriptor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public class NlmcAxeItem extends AxeItem {
     
-    private final ItemDescriptorV2<?,?> descriptor;
+    private final ItemDescriptor<?,?> descriptor;
     
-    public NlmcAxeItem(ItemDescriptorV2<?,?> descriptor) {
+    public NlmcAxeItem(ItemDescriptor<?,?> descriptor) {
         super(descriptor.getToolProperties().getToolTier(),
               descriptor.getToolProperties().getAttackDamage(),
               descriptor.getToolProperties().getBaseAttackSpeed(),

@@ -13,17 +13,17 @@ import java.util.Optional;
 import java.util.Queue;
 import java.util.function.Consumer;
 
-public abstract class BuilderV3<
-        TSelf extends BuilderV3<TSelf, TBuilt>,
-        TBuilt extends BuildableV3<TBuilt, TSelf>>
+public abstract class Builder<
+        TSelf extends Builder<TSelf, TBuilt>,
+        TBuilt extends Buildable<TBuilt, TSelf>>
         extends AbstractSelfReferencing<TSelf>
-        implements IBuilderV3<TSelf, TBuilt> {
+        implements IBuilder<TSelf, TBuilt> {
     
     protected TBuilt buildable;
     private final Queue<Consumer<TBuilt>> preBuildActions;
     private final Queue<Consumer<TBuilt>> postBuildActions;
     
-    protected BuilderV3(TBuilt initialBuildable) {
+    protected Builder(TBuilt initialBuildable) {
         if (initialBuildable.isBuilt()) {
             throw new IllegalStateException("Cannot build a buildable that has already been built.");
         }

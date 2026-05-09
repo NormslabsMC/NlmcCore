@@ -38,6 +38,9 @@ public class NlmcCore {
     public static final String MODID = "nlmc_core";
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
+    
+    public static final NlmcRegistrar NLMC_REGISTRAR = new NlmcRegistrar(MODID);
+    
     // Create a Deferred Register to hold Blocks which will all be registered under the "nlmc_core" namespace
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
     // Create a Deferred Register to hold Items which will all be registered under the "nlmc_core" namespace
@@ -77,8 +80,7 @@ public class NlmcCore {
         
         // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
         context.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
-        
-        NlmcRegistrar registrar = new NlmcRegistrar(MODID, modEventBus);
+        NLMC_REGISTRAR.initialize(modEventBus);
         NlmcToolTiers.registerTiers(registrar);
         
         // Register the commonSetup method for modloading

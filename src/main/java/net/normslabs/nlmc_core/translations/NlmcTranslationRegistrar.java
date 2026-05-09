@@ -13,15 +13,15 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
-import net.minecraftforge.registries.RegisterEvent;
-import net.normslabs.nlmc_core.infrastructure.abstracts.AbstractRegistrar;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.normslabs.nlmc_core.infrastructure.abstracts.AbstractManager;
 import net.normslabs.nlmc_core.infrastructure.NlmcRegistrar;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-public class NlmcTranslationRegistrar extends AbstractRegistrar {
+public class NlmcTranslationRegistrar extends AbstractManager {
     private final TranslationDictionary globalDictionary;
     private final Map<Locales, NlmcTranslationProvider> translationProviders;
     
@@ -32,6 +32,11 @@ public class NlmcTranslationRegistrar extends AbstractRegistrar {
     }
     
     
+    @Override
+    public void initialize(IEventBus modEventBus, IEventBus forgeEventBus) {
+        modEventBus.addListener(this::onDatagen);
+    }
+    
     public void registerTranslations(TranslationDictionary dictionary) {
         this.globalDictionary.merge(dictionary);
     }
@@ -40,21 +45,23 @@ public class NlmcTranslationRegistrar extends AbstractRegistrar {
         this.globalDictionary.addTranslation(locale, translationKey, translationValue);
     }
     
-    @Override
-    protected void onRegister(final RegisterEvent event) {
-    
-    }
-    
-    @Override
     protected void onDatagen(final GatherDataEvent event) {
         DataGenerator gen = event.getGenerator();
         PackOutput packOutput = gen.getPackOutput();
         ExistingFileHelper fileHelper = event.getExistingFileHelper();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
         
+        this.globalDictionary.getTranslations().forEach((key, translations) -> {
+            translations.forEach((locale, value) -> {
+                if (!this.translationProviders.containsKey(locale)) {
+                    this.translationProviders.put(locale, new NlmcTranslationProvider(this.nlmcRegistrar, locale, packOutput));
+                }
+                this.translationProviders.get(locale).registerTranslation(key, value);
+            });
+        });
+        
         this.translationProviders.forEach((locale, translationProvider) -> {
             gen.addProvider(event.includeClient(), translationProvider);
         });
     }
-    
 }

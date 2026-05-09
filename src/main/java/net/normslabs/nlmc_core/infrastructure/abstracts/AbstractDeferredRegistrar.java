@@ -9,43 +9,49 @@ package net.normslabs.nlmc_core.infrastructure.abstracts;
 
 
 import net.minecraft.core.Registry;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.Item;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegisterEvent;
+import net.minecraftforge.registries.RegistryObject;
+import net.normslabs.nlmc_core.abstracts.IMcRegistrable;
 import net.normslabs.nlmc_core.abstracts.IRegistrable;
 import net.normslabs.nlmc_core.infrastructure.NlmcRegistrar;
-import net.normslabs.nlmc_core.infrastructure.NlmcRegistryV3;
 
-public abstract class AbstractDeferredRegistrar<TMcObject, TRegistrable extends IRegistrable<? extends TMcObject>>
-        extends AbstractRegistrar<TMcObject, TRegistrable> implements IDeferredRegistrar<TMcObject, TRegistrable> {
+public abstract class AbstractDeferredRegistrar<
+        TRegistrable extends IMcRegistrable<? extends TRegistrable, ?, ? extends TMcType, TMcType>,
+        TMcType>
+        extends AbstractRegistrar<TRegistrable>
+        implements IDeferredRegistrar<TRegistrable, TMcType> {
     
-    private final ResourceKey<Registry<TMcObject>> registryKey;
-    protected DeferredRegister<TMcObject> deferredRegister;
+    private final ResourceKey<Registry<TMcType>> registryKey;
+    protected DeferredRegister<TMcType> deferredRegister;
     
-    protected AbstractDeferredRegistrar(NlmcRegistrar modRegistrar, ResourceKey<Registry<TMcObject>> registryKey) {
+    protected AbstractDeferredRegistrar(NlmcRegistrar modRegistrar, ResourceKey<Registry<TMcType>> registryKey) {
         super(modRegistrar);
         this.registryKey = registryKey;
         this.deferredRegister = DeferredRegister.create(registryKey, modRegistrar.getModNamespace());
-        this.deferredRegister.register(modRegistrar.getModEventBus());
     }
     
     @Override
-    public ResourceKey<Registry<TMcObject>> getRegistryKey() {
+    public void initialize(IEventBus modEventBus, IEventBus forgeEventBus) {
+        this.deferredRegister.register(modEventBus);
+    }
+    
+    @Override
+    public ResourceKey<Registry<TMcType>> getRegistryKey() {
         return this.registryKey;
     }
     
     @Override
-    public DeferredRegister<TMcObject> getDeferredRegister() {
+    public DeferredRegister<TMcType> getDeferredRegister() {
         return this.deferredRegister;
     }
     
     @Override
     public <T extends TRegistrable> T  register(T descriptor) {
-        super.register(descriptor);
-        this.deferredRegister.register(descriptor.getIdentifier(), descriptor);
-        return descriptor;
+        RegistryObject<TMcType> registryObject = this.deferredRegister.register(descriptor.getIdentifier(), descriptor);
+        descriptor.setRegistryKey(registryObject.getKey());
+        return super.register(descriptor);
     }
     
 }

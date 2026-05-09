@@ -16,9 +16,9 @@ package net.normslabs.nlmc_core.abstracts;
  * @author Marc-Eric Boury (TheNorm24) <webmaster@normslabs.net>
  * @since 2026-05-04 02:52
  */
-public interface IHasModelV2<
-        TModel extends IModelV2<TModel, TModelBuilder, TObjectColor>,
-        TModelBuilder extends IBuilderV3<TModelBuilder, TModel>,
+public interface IHasModel<
+        TModel extends IModel<TModel, TModelBuilder, TObjectColor>,
+        TModelBuilder extends IBuilder<TModelBuilder, TModel>,
         TObjectColor extends IObjectColor> {
     
     /**
