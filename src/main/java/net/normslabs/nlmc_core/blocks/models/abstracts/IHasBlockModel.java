@@ -14,7 +14,7 @@ import net.normslabs.nlmc_core.abstracts.IModel;
 import net.normslabs.nlmc_core.rendering.NlmcBlockColor;
 
 /**
- * Interface for item descriptors that own a model
+ * Interface for block descriptors that own a model
  *
  * @param <TModel>
  * @author Marc-Eric Boury (TheNorm24) <webmaster@normslabs.net>

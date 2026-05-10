@@ -21,8 +21,8 @@ import java.util.List;
 
 public class NlmcGenericItem extends Item {
     
-    protected final ItemDescriptor<?,?> descriptor;
-    public NlmcGenericItem(ItemDescriptor<?,?> descriptor) {
+    protected final ItemDescriptor<?,?,?> descriptor;
+    public NlmcGenericItem(ItemDescriptor<?,?,?> descriptor) {
         super(descriptor.getMcItemProperties());
         this.descriptor = descriptor;
     }

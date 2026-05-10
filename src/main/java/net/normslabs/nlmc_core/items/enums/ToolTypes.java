@@ -14,7 +14,9 @@ import net.minecraft.world.item.Item;
 import net.minecraftforge.common.Tags;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ToolTypes {
     public static ToolTypes AXE = new ToolTypes(ItemTags.AXES, ItemTags.TOOLS, Tags.Items.TOOLS);
@@ -22,12 +24,20 @@ public class ToolTypes {
     public static ToolTypes SHOVEL = new ToolTypes(ItemTags.SHOVELS, ItemTags.TOOLS, Tags.Items.TOOLS);
     public static ToolTypes HOES = new ToolTypes(ItemTags.HOES, ItemTags.TOOLS, Tags.Items.TOOLS);
     public static ToolTypes SHEARS = new ToolTypes(Tags.Items.SHEARS, ItemTags.TOOLS, Tags.Items.TOOLS);
+    public static ToolTypes FISHING_ROD = new ToolTypes(Tags.Items.TOOLS_FISHING_RODS, ItemTags.TOOLS, Tags.Items.TOOLS);
     public static ToolTypes SWORD = new ToolTypes(ItemTags.SWORDS, ItemTags.TOOLS, Tags.Items.TOOLS);
     public static ToolTypes SHIELD = new ToolTypes(Tags.Items.TOOLS_SHIELDS, ItemTags.TOOLS, Tags.Items.TOOLS);
     public static ToolTypes BOW = new ToolTypes(Tags.Items.TOOLS_BOWS, ItemTags.TOOLS, Tags.Items.TOOLS);
     public static ToolTypes CROSSBOW = new ToolTypes(Tags.Items.TOOLS_CROSSBOWS, ItemTags.TOOLS, Tags.Items.TOOLS);
-    public static ToolTypes FISHING_ROD = new ToolTypes(Tags.Items.TOOLS_FISHING_RODS, ItemTags.TOOLS, Tags.Items.TOOLS);
     public static ToolTypes TRIDENT = new ToolTypes(Tags.Items.TOOLS_TRIDENTS, ItemTags.TOOLS, Tags.Items.TOOLS);
+    
+    public static final Set<ToolTypes> COMBAT_TOOL_TYPES = new HashSet<>(){{
+        this.add(SWORD);
+        this.add(SHIELD);
+        this.add(BOW);
+        this.add(CROSSBOW);
+        this.add(TRIDENT);
+    }};
     
     private final List<TagKey<Item>> toolTypeTags;
     @SafeVarargs

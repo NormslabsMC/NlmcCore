@@ -8,6 +8,7 @@
 package net.normslabs.nlmc_core.abstracts;
 
 
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.normslabs.nlmc_core.infrastructure.abstracts.IRegistrar;
 
@@ -15,22 +16,22 @@ import java.util.function.Function;
 
 public abstract class AbstractRegistrable<
         TSelf extends AbstractRegistrable<TSelf, TBuilder, TRegistrar, TNlmcType>,
-        TBuilder extends Builder<TBuilder, TSelf>,
+        TBuilder extends AbstractBuilder<TBuilder, TSelf>,
         TRegistrar extends IRegistrar<? super TSelf>,
         TNlmcType>
         extends AbstractDescriptor<TSelf, TBuilder>
-        implements IRegistrable<TSelf, TRegistrar, TNlmcType> {
-    
+        implements IRegistrable<TSelf, TRegistrar, TNlmcType>,
+        Comparable<TSelf> {
     
     protected boolean isRegistered;
     protected final String objectNamespace;
     protected final String objectIdentifier;
     protected final ResourceLocation objectResourceLocation;
-    protected final Function<TSelf, TNlmcType> objectCreatorFunction;
+    protected final Function<? super TSelf, TNlmcType> objectCreatorFunction;
     protected TNlmcType createdObject;
     
     protected AbstractRegistrable(String objectNamespace, String objectIdentifier,
-                                  Function<TSelf, TNlmcType> objectCreatorFunction) {
+                                  Function<? super TSelf, TNlmcType> objectCreatorFunction) {
         this.objectNamespace = objectNamespace;
         this.objectIdentifier = objectIdentifier;
         this.objectResourceLocation = ResourceLocation.fromNamespaceAndPath(objectNamespace, objectIdentifier);
@@ -79,5 +80,36 @@ public abstract class AbstractRegistrable<
         registrar.register(this.self());
         this.setIsRegistered(true);
         return this.self();
+    }
+    
+    @Override
+    public String toString() {
+        return "[" + this.getClass().getSimpleName() + "] -> "+this.objectNamespace + ":" + this.objectIdentifier;
+    }
+    
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        } else if (!this.self().getClass().isInstance(other)) {
+            return false;
+        } else {
+            AbstractRegistrable<?, ?, ?, ?> otherRegistrable = this.self().getClass().cast(other);
+            return this.objectNamespace.equals(otherRegistrable.objectNamespace) && this.objectIdentifier.equals(otherRegistrable.objectIdentifier);
+        }
+    }
+    
+    @Override
+    public int hashCode() {
+        return this.objectResourceLocation.hashCode();
+    }
+    
+    @Override
+    public int compareTo(TSelf other) {
+        int i = this.objectIdentifier.compareTo(other.objectIdentifier);
+        if (i == 0) {
+            i = this.objectNamespace.compareTo(other.objectNamespace);
+        }
+        return i;
     }
 }

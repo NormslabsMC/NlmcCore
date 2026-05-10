@@ -9,19 +9,21 @@ package net.normslabs.nlmc_core.loot;
 
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraftforge.common.loot.LootModifier;
-import net.normslabs.nlmc_core.abstracts.Buildable;
-import net.normslabs.nlmc_core.infrastructure.abstracts.IRegistrar;
+import net.normslabs.nlmc_core.abstracts.AbstractBuilder;
+import net.normslabs.nlmc_core.abstracts.AbstractBuildable;
 import net.normslabs.nlmc_core.loot.abstracts.ILootModifierDescriptor;
 import net.normslabs.nlmc_core.loot.abstracts.INlmcLootModifier;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class LootModifierDescriptor<TNlmcType extends LootModifier & INlmcLootModifier<TNlmcType>>
-        extends Buildable<LootModifierDescriptor<TNlmcType>, LootModifierDescriptor<TNlmcType>.Builder>
+        extends AbstractBuildable<LootModifierDescriptor<TNlmcType>, LootModifierDescriptor<TNlmcType>.Builder>
         implements
         ILootModifierDescriptor<LootModifierDescriptor<TNlmcType>, LootModifierDescriptor<TNlmcType>.Builder, TNlmcType> {
     
@@ -29,10 +31,11 @@ public class LootModifierDescriptor<TNlmcType extends LootModifier & INlmcLootMo
     protected final String objectNamespace;
     protected final String objectIdentifier;
     protected final ResourceLocation objectResourceLocation;
-    protected final List<LootItemCondition> conditions;
     private final Function<LootModifierDescriptor<TNlmcType>, TNlmcType> objectCreator;
     private TNlmcType createdObject;
     private final LootModifierTypes lootModifierType;
+    private final List<LootItemCondition> conditions;
+    private final List<Supplier<Item>> items;
     
     public LootModifierDescriptor(String objectNamespace, String objectIdentifier, LootModifierTypes lootModifierType,
                                   Function<LootModifierDescriptor<TNlmcType>, TNlmcType> objectCreator) {
@@ -42,6 +45,7 @@ public class LootModifierDescriptor<TNlmcType extends LootModifier & INlmcLootMo
         this.objectCreator = objectCreator;
         this.lootModifierType = lootModifierType;
         this.conditions = new ArrayList<>();
+        this.items = new ArrayList<>();
     }
     
     @Override
@@ -96,22 +100,26 @@ public class LootModifierDescriptor<TNlmcType extends LootModifier & INlmcLootMo
         return this.createdObject;
     }
     
-    public LootModifierTypes getLootModifierType() {
-        return this.lootModifierType;
-    }
-    
     @Override
-    public LootModifierDescriptor<TNlmcType> registerIn(
-            IRegistrar<? super LootModifierDescriptor<TNlmcType>, LootModifier> registrar) {
+    public LootModifierDescriptor<TNlmcType> registerIn(LootModifierRegistrar registrar) {
         registrar.register(this);
         this.setIsRegistered(true);
         return this;
     }
     
-    public class Builder extends net.normslabs.nlmc_core.abstracts.Builder<Builder, LootModifierDescriptor<TNlmcType>> {
+    public LootModifierTypes getLootModifierType() {
+        return this.lootModifierType;
+    }
+    
+    public class Builder extends AbstractBuilder<Builder, LootModifierDescriptor<TNlmcType>> {
         
         protected Builder(LootModifierDescriptor<TNlmcType> initialBuildable) {
             super(initialBuildable);
         }
+        
+        public Builder isItemAddModifier(Supplier<Item> itemItemToAdd, int itemAmount) {
+        
+        }
+        
     }
 }

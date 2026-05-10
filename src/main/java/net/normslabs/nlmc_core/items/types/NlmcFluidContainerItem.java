@@ -31,10 +31,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class NlmcFluidContainerItem extends Item {
-    protected final ItemDescriptor<?,?> descriptor;
+    protected final ItemDescriptor<?,?,?> descriptor;
     private final int capacity;
     
-    public NlmcFluidContainerItem(ItemDescriptor<?,?> descriptor, int capacity) {
+    public NlmcFluidContainerItem(ItemDescriptor<?,?,?> descriptor, int capacity) {
         super(descriptor.getMcItemProperties());
         this.descriptor = descriptor;
         this.capacity = capacity;

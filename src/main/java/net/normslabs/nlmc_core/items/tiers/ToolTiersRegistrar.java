@@ -12,14 +12,16 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Tier;
 import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.RegisterEvent;
+import net.normslabs.nlmc_core.infrastructure.abstracts.AbstractManager;
 import net.normslabs.nlmc_core.infrastructure.abstracts.AbstractRegistrar;
 import net.normslabs.nlmc_core.infrastructure.NlmcRegistrar;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ToolTiersRegistrar extends AbstractRegistrar {
+public class ToolTiersRegistrar extends AbstractManager {
     private final List<ItemTierDescriptor> tierDescriptors;
     
     public ToolTiersRegistrar(NlmcRegistrar parentRegistrar) {
@@ -28,24 +30,23 @@ public class ToolTiersRegistrar extends AbstractRegistrar {
     }
     
     @Override
+    public void initialize(IEventBus modEventBus, IEventBus forgeEventBus) {
+        modEventBus.addListener(this::onRegister);
+    }
+    
     public void onRegister(final RegisterEvent event) {
         this.tierDescriptors.forEach((tierDescriptor) -> {
-            TierSortingRegistry.registerTier(tierDescriptor.buildTier(),
+            Tier tier = TierSortingRegistry.registerTier(tierDescriptor.get(),
                                              ResourceLocation.fromNamespaceAndPath(
                                                      this.getNlmcRegistrar().getModNamespace(),
                                                      tierDescriptor.getTierName()),
-                                             tierDescriptor.getLowerTiers(),
-                                             tierDescriptor.getHigherTiers());
+                                             new ArrayList<>(tierDescriptor.getLowerTiers()),
+                                             new ArrayList<>(tierDescriptor.getHigherTiers()));
         });
-    }
-    
-    @Override
-    public void onDatagen(GatherDataEvent event) {
-    
     }
     
     public Tier registerItemTier(ItemTierDescriptor descriptor) {
         this.tierDescriptors.add(descriptor);
-        return descriptor.buildTier();
+        return descriptor.get();
     }
 }

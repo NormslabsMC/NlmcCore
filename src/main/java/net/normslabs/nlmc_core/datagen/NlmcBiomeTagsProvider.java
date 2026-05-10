@@ -1,25 +1,21 @@
-/*
- * Project: nlmccore
- * @author Marc-Eric Boury (TheNorm24) <webmaster@normslabs.net>
- * @copyright (c) Marc-Eric Boury 2026 - All rights reserved
- * @since 2026-04-29 19:06
- */
-
-package net.normslabs.nlmc_core.tags;
-
+package net.normslabs.nlmc_core.datagen;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.FluidTagsProvider;
+import net.minecraft.data.tags.BiomeTagsProvider;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.normslabs.nlmc_core.tags.NlmcTagsManager;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class NlmcFluidTagsProvider extends FluidTagsProvider {
+public class NlmcBiomeTagsProvider extends BiomeTagsProvider {
     private final NlmcTagsManager manager;
     
-    public NlmcFluidTagsProvider(NlmcTagsManager manager,
+    public NlmcBiomeTagsProvider(NlmcTagsManager manager,
                                  PackOutput output,
                                  CompletableFuture<HolderLookup.Provider> lookupProvider,
                                  @Nullable ExistingFileHelper existingFileHelper) {
@@ -29,13 +25,12 @@ public class NlmcFluidTagsProvider extends FluidTagsProvider {
     
     @Override
     protected void addTags(HolderLookup.Provider lookupProvider) {
-        this.manager.getFluidTagAssociations()
-                    .forEach((fluidSupplier, tagKeyList)
-                                     -> tagKeyList.forEach(tagKey -> this.tag(tagKey).add(fluidSupplier.get())));
-        this.manager.getTagFluidTagAssociations()
+        this.manager.getBiomeTagAssociations()
+                    .forEach((biomeKey, tagKeyList)
+                                     -> tagKeyList.forEach(tagKey -> this.tag(tagKey).add(biomeKey)));
+        this.manager.getTagBiomeTagAssociations()
                     .forEach((targetTag, tagsToAddList)
                                      -> tagsToAddList.forEach((tagToAdd) -> this.tag(targetTag).addTag(tagToAdd)));
     }
-    
     
 }

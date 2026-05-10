@@ -9,7 +9,8 @@ package net.normslabs.nlmc_core.items.properties;
 
 
 import net.minecraft.world.effect.MobEffectInstance;
-import net.normslabs.nlmc_core.abstracts.Buildable;
+import net.normslabs.nlmc_core.abstracts.AbstractBuilder;
+import net.normslabs.nlmc_core.abstracts.AbstractBuildable;
 import net.normslabs.nlmc_core.items.ItemDescriptor;
 import net.normslabs.nlmc_core.exceptions.ValidationException;
 
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class ItemFoodProperties extends Buildable<ItemFoodProperties, ItemFoodProperties.Builder> {
+public class ItemFoodProperties extends AbstractBuildable<ItemFoodProperties, ItemFoodProperties.Builder> {
     private final ItemDescriptor<?,?,?> parentDescriptor;
     private int nutrition;
     private float saturationModifier;
@@ -107,7 +108,7 @@ public class ItemFoodProperties extends Buildable<ItemFoodProperties, ItemFoodPr
     }
     
     
-    public class Builder extends net.normslabs.nlmc_core.abstracts.Builder<Builder, ItemFoodProperties> {
+    public class Builder extends AbstractBuilder<Builder, ItemFoodProperties> {
         
         public Builder(ItemFoodProperties initialBuildable) {
             super(initialBuildable);

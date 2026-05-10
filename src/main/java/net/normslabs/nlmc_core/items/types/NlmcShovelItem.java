@@ -19,9 +19,9 @@ import java.util.List;
 
 public class NlmcShovelItem extends ShovelItem {
     
-    private final ItemDescriptor<?,?> descriptor;
+    private final ItemDescriptor<?,?,?> descriptor;
     
-    public NlmcShovelItem(ItemDescriptor<?,?> descriptor) {
+    public NlmcShovelItem(ItemDescriptor<?,?,?> descriptor) {
         super(descriptor.getToolProperties().getToolTier(),
               descriptor.getToolProperties().getAttackDamage(),
               descriptor.getToolProperties().getBaseAttackSpeed(),

@@ -15,12 +15,14 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeTier;
+import net.normslabs.nlmc_core.abstracts.AbstractBuildable;
+import net.normslabs.nlmc_core.abstracts.AbstractBuilder;
+import net.normslabs.nlmc_core.utils.BooleanUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.function.Supplier;
 
-public class ItemTierDescriptor {
+public class ItemTierDescriptor extends AbstractBuildable<ItemTierDescriptor, ItemTierDescriptor.Builder> implements Supplier<Tier> {
     private final String tierName;
     private final int miningLevel;
     private final int durability;
@@ -29,12 +31,28 @@ public class ItemTierDescriptor {
     private final int enchantability;
     private final TagKey<Block> requiredToolBlockTag;
     private final Supplier<Ingredient> repairIngredient;
-    private final List<Object> lowerTiers;
-    private final List<Object> higherTiers;
+    private final Set<Object> lowerTiers;
+    private final Set<Object> higherTiers;
     private Tier createdTier = null;
+    
+    @Override
+    public void validateForBuild() {
+    
+    }
+    
+    @Override
+    public Builder getBuilder() {
+        return new Builder(this);
+    }
+    
+    @Override
+    public void onBuild() {
+    
+    }
     
     public ItemTierDescriptor(String tierName, int miningLevel, int durability, float miningSpeed, float damageBonus,
                               int enchantability, TagKey<Block> requiredToolBlockTag, Supplier<Ingredient> repairIngredient) {
+        super();
         this.tierName = tierName;
         this.miningLevel = miningLevel;
         this.durability = durability;
@@ -43,11 +61,12 @@ public class ItemTierDescriptor {
         this.enchantability = enchantability;
         this.requiredToolBlockTag = requiredToolBlockTag;
         this.repairIngredient = repairIngredient;
-        this.lowerTiers = new ArrayList<>();
-        this.higherTiers = new ArrayList<>();
+        this.lowerTiers = new HashSet<>();
+        this.higherTiers = new HashSet<>();
     }
     
     public ItemTierDescriptor(String tierName, Tier tier) {
+        super();
         this.tierName = tierName;
         this.miningLevel = tier.getLevel();
         this.durability = tier.getUses();
@@ -56,8 +75,8 @@ public class ItemTierDescriptor {
         this.enchantability = tier.getEnchantmentValue();
         this.requiredToolBlockTag = tier.getTag();
         this.repairIngredient = tier::getRepairIngredient;
-        this.lowerTiers = new ArrayList<>();
-        this.higherTiers = new ArrayList<>();
+        this.lowerTiers = new HashSet<>();
+        this.higherTiers = new HashSet<>();
     }
     
     public String getTierName() {
@@ -76,11 +95,11 @@ public class ItemTierDescriptor {
         return this.enchantability;
     }
     
-    public List<Object> getHigherTiers() {
+    public Set<Object> getHigherTiers() {
         return this.higherTiers;
     }
     
-    public List<Object> getLowerTiers() {
+    public Set<Object> getLowerTiers() {
         return this.lowerTiers;
     }
     
@@ -100,7 +119,8 @@ public class ItemTierDescriptor {
         return this.requiredToolBlockTag;
     }
     
-    public Tier buildTier() {
+    @Override
+    public Tier get() {
         if (this.createdTier == null) {
             this.createdTier = new ForgeTier(
                     this.miningLevel,
@@ -124,14 +144,46 @@ public class ItemTierDescriptor {
         return this;
     }
     
-    public ItemTierDescriptor addLowerTiers(List<Tier> lowerTiers) {
+    public ItemTierDescriptor addLowerTiers(Collection<Tier> lowerTiers) {
         this.lowerTiers.addAll(lowerTiers);
         return this;
     }
     
-    public ItemTierDescriptor addHigherTiers(List<Tier> higherTiers) {
+    public ItemTierDescriptor addHigherTiers(Collection<Tier> higherTiers) {
         this.higherTiers.addAll(higherTiers);
         return this;
+    }
+    
+    
+    
+    public int hashCode() {
+        return this.tierName.hashCode();
+    }
+    
+    public boolean equals(Object other) {
+        if (!(other instanceof ItemTierDescriptor otherDescriptor)) {
+            return false;
+        } else if (other == this) {
+            return true;
+        } else {
+            return BooleanUtils.and(
+                    Objects.equals(this.tierName, otherDescriptor.tierName),
+                    this.miningLevel == otherDescriptor.miningLevel,
+                    this.durability == otherDescriptor.durability,
+                    this.miningSpeed == otherDescriptor.miningSpeed,
+                    this.damageBonus == otherDescriptor.damageBonus,
+                    this.enchantability == otherDescriptor.enchantability,
+                    this.requiredToolBlockTag == otherDescriptor.requiredToolBlockTag,
+                    this.repairIngredient == otherDescriptor.repairIngredient
+            );
+        }
+    }
+    
+    public class Builder extends AbstractBuilder<Builder, ItemTierDescriptor> {
+        
+        protected Builder(ItemTierDescriptor initialBuildable) {
+            super(initialBuildable);
+        }
     }
     
 }

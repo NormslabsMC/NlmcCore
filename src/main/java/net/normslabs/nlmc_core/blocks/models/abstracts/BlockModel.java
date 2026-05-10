@@ -9,8 +9,9 @@ package net.normslabs.nlmc_core.blocks.models.abstracts;
 
 
 import net.minecraft.resources.ResourceLocation;
-import net.normslabs.nlmc_core.abstracts.Buildable;
-import net.normslabs.nlmc_core.abstracts.Builder;
+import net.normslabs.nlmc_core.abstracts.AbstractBuildable;
+import net.normslabs.nlmc_core.abstracts.AbstractBuilder;
+import net.normslabs.nlmc_core.items.models.abstracts.ItemModel;
 import net.normslabs.nlmc_core.rendering.NlmcBlockColor;
 import net.normslabs.nlmc_core.rendering.RendererTypes;
 import net.normslabs.nlmc_core.rendering.Texture;
@@ -19,10 +20,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class BlockModel<
-        TSelf extends BlockModel<TSelf, TBuilder>,
-        TBuilder extends BlockModel<TSelf, TBuilder>.BlockModelBuilder>
-        extends Buildable<TSelf, TBuilder>
-        implements IBlockModel<TSelf, TBuilder> {
+        TSelf extends BlockModel<TSelf, TBuilder, TItemModel, TItemModelBuilder>,
+        TBuilder extends BlockModel<TSelf, TBuilder, TItemModel, TItemModelBuilder>.BlockModelBuilder,
+        TItemModel extends ItemModel<TItemModel, TItemModelBuilder>,
+        TItemModelBuilder extends ItemModel<TItemModel, TItemModelBuilder>.ItemModelBuilder>
+        extends AbstractBuildable<TSelf, TBuilder>
+        implements IBlockModel<TSelf, TBuilder, TItemModel, TItemModelBuilder> {
     
     private int nextTextureLayer = 0;
     private RendererTypes renderer;
@@ -77,7 +80,7 @@ public abstract class BlockModel<
         this.nextTextureLayer++;
     }
     
-    public class BlockModelBuilder extends Builder<TBuilder, TSelf> {
+    public class BlockModelBuilder extends AbstractBuilder<TBuilder, TSelf> {
         
         public BlockModelBuilder(TSelf initialBuildable) {
             super(initialBuildable);

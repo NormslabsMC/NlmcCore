@@ -12,6 +12,7 @@ import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.ObjectListIterator;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -22,11 +23,14 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.normslabs.nlmc_core.loot.abstracts.INlmcLootModifier;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.function.Supplier;
 
-public class NlmcReplaceItemModifier extends LootModifier implements INlmcLootModifier<NlmcReplaceItemModifier> {
-    public static final String CODEC_NAME = "nlmc_replace_item_modifier";
-    public static final Supplier<Codec<NlmcReplaceItemModifier>> CODEC
+public class NlmcCustomReplaceLootModifier
+        extends LootModifier implements INlmcLootModifier<NlmcCustomReplaceLootModifier> {
+    public static final String CODEC_NAME = "nlmc_custom_replace_loot_modifier";
+    public static final Supplier<Codec<NlmcCustomReplaceLootModifier>> CODEC
             = Suppliers.memoize(() -> RecordCodecBuilder.create(inst -> codecStart(inst).and(
                     inst.group(
                             ForgeRegistries.ITEMS.getCodec()
@@ -34,21 +38,35 @@ public class NlmcReplaceItemModifier extends LootModifier implements INlmcLootMo
                                                  .forGetter(m -> m.targetItem),
                             ForgeRegistries.ITEMS.getCodec()
                                                  .fieldOf("replacementItem")
-                                                 .forGetter(m -> m.replacementItem)))
-                                                                                        .apply(inst, NlmcReplaceItemModifier::new)));
+                                                 .forGetter(m -> m.replacementItem),
+                            Codec.FLOAT
+                                    .fieldOf("countMultiplier")
+                                    .forGetter(modifier -> modifier.countMultiplier)))
+                                                                                        .apply(inst, NlmcCustomReplaceLootModifier::new)));
     
     private final Item targetItem;
     private final Item replacementItem;
+    private final float countMultiplier;
     
     /**
      * Constructs a LootModifier.
      *
      * @param conditionsIn the ILootConditions that need to be matched before the loot is modified.
      */
-    protected NlmcReplaceItemModifier(LootItemCondition[] conditionsIn, Item targetItem, Item replacementItem) {
+    protected NlmcCustomReplaceLootModifier(LootItemCondition[] conditionsIn, Item targetItem, Item replacementItem, float countMultiplier) {
         super(conditionsIn);
         this.targetItem = targetItem;
         this.replacementItem = replacementItem;
+        this.countMultiplier = countMultiplier;
+    }
+    
+    /**
+     * Constructs a LootModifier.
+     *
+     * @param conditionsIn the ILootConditions that need to be matched before the loot is modified.
+     */
+    protected NlmcCustomReplaceLootModifier(LootItemCondition[] conditionsIn, Item targetItem, Item replacementItem) {
+        this(conditionsIn, targetItem, replacementItem, 1.0f);
     }
     
     @Override
@@ -59,11 +77,12 @@ public class NlmcReplaceItemModifier extends LootModifier implements INlmcLootMo
                 return generatedLoot;
             }
         }
-        for (ItemStack stack : generatedLoot) {
+        ObjectListIterator<ItemStack> it = generatedLoot.iterator();
+        while (it.hasNext()) {
+            var stack = it.next();
             if (stack.is(this.targetItem)) {
-                int count = stack.getCount();
-                generatedLoot.remove(stack);
-                generatedLoot.add(new ItemStack(this.replacementItem, count));
+                int newCount = Math.round(stack.getCount() * this.countMultiplier);
+                it.set(new ItemStack(this.replacementItem, newCount));
             }
         }
         return generatedLoot;
@@ -76,11 +95,11 @@ public class NlmcReplaceItemModifier extends LootModifier implements INlmcLootMo
     
     @Override
     public String getCodecName() {
-        return NlmcReplaceItemModifier.CODEC_NAME;
+        return NlmcCustomReplaceLootModifier.CODEC_NAME;
     }
     
     @Override
-    public Supplier<Codec<NlmcReplaceItemModifier>> getCodecSupplier() {
-        return NlmcReplaceItemModifier.CODEC;
+    public Supplier<Codec<NlmcCustomReplaceLootModifier>> getCodecSupplier() {
+        return NlmcCustomReplaceLootModifier.CODEC;
     }
 }

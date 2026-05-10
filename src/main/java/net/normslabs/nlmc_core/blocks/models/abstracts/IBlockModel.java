@@ -10,13 +10,18 @@ package net.normslabs.nlmc_core.blocks.models.abstracts;
 
 import net.normslabs.nlmc_core.abstracts.IBuilder;
 import net.normslabs.nlmc_core.abstracts.IModel;
+import net.normslabs.nlmc_core.items.models.abstracts.IItemModel;
 import net.normslabs.nlmc_core.rendering.NlmcBlockColor;
 
 public interface IBlockModel<
-        TSelf extends IBlockModel<TSelf, TBuilder>,
-        TBuilder extends IBuilder<TBuilder, TSelf>>
+        TSelf extends IBlockModel<TSelf, TBuilder, TItemModel, TItemModelBuilder>,
+        TBuilder extends IBuilder<TBuilder, TSelf>,
+        TItemModel extends IItemModel<TItemModel, TItemModelBuilder>,
+        TItemModelBuilder extends IBuilder<TItemModelBuilder, TItemModel>>
         extends IModel<TSelf, TBuilder, NlmcBlockColor> {
     
     NlmcBlockColor getColorDescriptor();
 
+    TItemModel toItemModel();
+    
 }

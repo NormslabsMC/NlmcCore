@@ -13,6 +13,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Interface for objects that support tags.
@@ -25,14 +26,14 @@ import java.util.List;
 public interface ITaggable<TMcTagType> {
     
     /**
-     * Returns the list of tags as their {@link ResourceLocation} the object
+     * Returns the set of tags as their {@link ResourceLocation} the object
      * currently is set to be added to.
      *
-     * @return the {@link List} of the current tags to add.
+     * @return the {@link Set} of the current tags to add.
      * @author Marc-Eric Boury (TheNorm24) <webmaster@normslabs.net>
      * @since 2026-05-04 01:50
      */
-    List<TagKey<TMcTagType>> getTags();
+    Set<TagKey<TMcTagType>> getTags();
     
     /**
      * Adds a tag to add the taggable object to.

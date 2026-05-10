@@ -9,11 +9,12 @@ package net.normslabs.nlmc_core.items.properties;
 
 
 import net.minecraft.world.item.Tier;
-import net.normslabs.nlmc_core.abstracts.Buildable;
+import net.normslabs.nlmc_core.abstracts.AbstractBuilder;
+import net.normslabs.nlmc_core.abstracts.AbstractBuildable;
 import net.normslabs.nlmc_core.items.ItemDescriptor;
 import net.normslabs.nlmc_core.items.enums.ArmorTypes;
 
-public class ItemArmorProperties extends Buildable<ItemArmorProperties, ItemArmorProperties.Builder> {
+public class ItemArmorProperties extends AbstractBuildable<ItemArmorProperties, ItemArmorProperties.Builder> {
     private final ItemDescriptor<?,?,?> parentDescriptor;
     private ArmorTypes armorType;
     private Tier armorTier;
@@ -74,7 +75,7 @@ public class ItemArmorProperties extends Buildable<ItemArmorProperties, ItemArmo
         // nothing special to do here
     }
     
-    public class Builder extends net.normslabs.nlmc_core.abstracts.Builder<Builder, ItemArmorProperties> {
+    public class Builder extends AbstractBuilder<Builder, ItemArmorProperties> {
         
         public Builder(ItemArmorProperties initialBuildable) {
             super(initialBuildable);

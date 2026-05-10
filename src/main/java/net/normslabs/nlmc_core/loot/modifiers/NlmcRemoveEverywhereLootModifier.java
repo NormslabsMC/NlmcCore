@@ -24,15 +24,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
-public class NlmcRemoveLootModifier extends LootModifier implements INlmcLootModifier<NlmcRemoveLootModifier> {
+public class NlmcRemoveEverywhereLootModifier
+        extends LootModifier implements INlmcLootModifier<NlmcRemoveEverywhereLootModifier> {
     
-    public static final String CODEC_NAME = "nlmc_remove_loot_modifier";
-    public static final Supplier<Codec<NlmcRemoveLootModifier>> CODEC
+    public static final String CODEC_NAME = "nlmc_remove_everywhere_loot_modifier";
+    public static final Supplier<Codec<NlmcRemoveEverywhereLootModifier>> CODEC
             = Suppliers.memoize(() -> RecordCodecBuilder.create(inst -> codecStart(inst).and(
                                 ForgeRegistries.ITEMS.getCodec()
                                                      .fieldOf("itemToRemove")
                                                      .forGetter(modifier -> modifier.itemToRemove))
-                        .apply(inst, NlmcRemoveLootModifier::new)));
+                        .apply(inst, NlmcRemoveEverywhereLootModifier::new)));
     private final Item itemToRemove;
     
     /**
@@ -40,7 +41,7 @@ public class NlmcRemoveLootModifier extends LootModifier implements INlmcLootMod
      *
      * @param conditionsIn the ILootConditions that need to be matched before the loot is modified.
      */
-    protected NlmcRemoveLootModifier(LootItemCondition[] conditionsIn, Item itemToRemove) {
+    protected NlmcRemoveEverywhereLootModifier(LootItemCondition[] conditionsIn, Item itemToRemove) {
         super(conditionsIn);
         this.itemToRemove = itemToRemove;
     }
@@ -48,13 +49,7 @@ public class NlmcRemoveLootModifier extends LootModifier implements INlmcLootMod
     @Override
     protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot,
                                                           LootContext context) {
-        for (LootItemCondition condition : this.conditions) {
-            if (!condition.test(context)) {
-                return generatedLoot;
-            }
-        }
         generatedLoot.removeIf(stack -> stack.is(this.itemToRemove));
-        
         return generatedLoot;
     }
     
@@ -65,11 +60,11 @@ public class NlmcRemoveLootModifier extends LootModifier implements INlmcLootMod
     
     @Override
     public String getCodecName() {
-        return NlmcRemoveLootModifier.CODEC_NAME;
+        return NlmcRemoveEverywhereLootModifier.CODEC_NAME;
     }
     
     @Override
-    public Supplier<Codec<NlmcRemoveLootModifier>> getCodecSupplier() {
-        return NlmcRemoveLootModifier.CODEC;
+    public Supplier<Codec<NlmcRemoveEverywhereLootModifier>> getCodecSupplier() {
+        return NlmcRemoveEverywhereLootModifier.CODEC;
     }
 }

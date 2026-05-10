@@ -10,10 +10,38 @@ package net.normslabs.nlmc_core.rendering;
 
 import net.minecraft.resources.ResourceLocation;
 import net.normslabs.nlmc_core.NlmcCore;
+import net.normslabs.nlmc_core.utils.generators.StringHashIntGenerator;
 
 public class DynamicTextures {
     
     public static class Ores {
+        
+        public static ResourceLocation selectOreOverlayTextureForIdentifier(String identifier) {
+            return switch (StringHashIntGenerator.generate(identifier, 0, 3)) {
+                case 1 -> ORE_OVERLAY_1;
+                case 2 -> ORE_OVERLAY_2;
+                case 3 -> ORE_OVERLAY_3;
+                default -> ORE_OVERLAY_0;
+            };
+        }
+        
+        public static ResourceLocation selectRawOreTextureForIdentifier(String identifier) {
+            return switch (StringHashIntGenerator.generate(identifier, 0, 3)) {
+                case 1 -> RAW_ORE_1;
+                case 2 -> RAW_ORE_2;
+                case 3 -> RAW_ORE_3;
+                default -> RAW_ORE_0;
+            };
+        }
+        
+        public static ResourceLocation selectCrushedRawOreTextureForIdentifier(String identifier) {
+            return switch (StringHashIntGenerator.generate(identifier, 0, 3)) {
+                case 1 -> CRUSHED_RAW_ORE_1;
+                case 2 -> CRUSHED_RAW_ORE_2;
+                case 3 -> CRUSHED_RAW_ORE_3;
+                default -> CRUSHED_RAW_ORE_0;
+            };
+        }
         
         // Ores
         public static final ResourceLocation ORE_OVERLAY_0 = ResourceLocation.fromNamespaceAndPath(NlmcCore.MODID, "block/dynamic/ores/ore_overlay_0");
@@ -38,6 +66,16 @@ public class DynamicTextures {
     }
     
     public static class Stones {
+        
+        public static ResourceLocation selectStoneTextureForIdentifier(String identifier) {
+            return switch (StringHashIntGenerator.generate(identifier, 0, 3)) {
+                case 1 -> STONE_1;
+                case 2 -> STONE_2;
+                case 3 -> STONE_3;
+                default -> STONE_0;
+            };
+        }
+        
         // Stones
         public static final ResourceLocation STONE_0 = ResourceLocation.fromNamespaceAndPath(NlmcCore.MODID, "block/dynamic/stones/stone_0");
         public static final ResourceLocation STONE_1 = ResourceLocation.fromNamespaceAndPath(NlmcCore.MODID, "block/dynamic/stones/stone_1");
@@ -85,6 +123,25 @@ public class DynamicTextures {
     }
     
     public static class Metals {
+        
+        public static ResourceLocation selectIngotTextureForIdentifier(String identifier) {
+            return switch (StringHashIntGenerator.generate(identifier, 0, 3)) {
+                case 1 -> METAL_INGOT_1;
+                case 2 -> METAL_INGOT_2;
+                case 3 -> METAL_INGOT_3;
+                default -> METAL_INGOT_0;
+            };
+        }
+        
+        public static ResourceLocation selectNuggetTextureForIdentifier(String identifier) {
+            return switch (StringHashIntGenerator.generate(identifier, 0, 3)) {
+                case 1 -> METAL_NUGGET_1;
+                case 2 -> METAL_NUGGET_2;
+                case 3 -> METAL_NUGGET_3;
+                default -> METAL_NUGGET_0;
+            };
+        }
+        
         public static final ResourceLocation METAL_INGOT_0 = ResourceLocation.fromNamespaceAndPath(NlmcCore.MODID, "item/dynamic/metals/ingot_0");
         public static final ResourceLocation METAL_INGOT_1 = ResourceLocation.fromNamespaceAndPath(NlmcCore.MODID, "item/dynamic/metals/ingot_1");
         public static final ResourceLocation METAL_INGOT_2 = ResourceLocation.fromNamespaceAndPath(NlmcCore.MODID, "item/dynamic/metals/ingot_2");

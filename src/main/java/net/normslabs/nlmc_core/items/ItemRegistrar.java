@@ -19,8 +19,10 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.normslabs.nlmc_core.datagen.NlmcItemModelManager;
 import net.normslabs.nlmc_core.infrastructure.NlmcRegistrar;
 import net.normslabs.nlmc_core.infrastructure.abstracts.AbstractDeferredRegistrar;
+import net.normslabs.nlmc_core.items.enums.ItemTypes;
 import net.normslabs.nlmc_core.items.enums.ToolTypes;
 import net.normslabs.nlmc_core.items.models.CubeTopItemModel;
 import net.normslabs.nlmc_core.items.models.CustomCubeItemModel;
@@ -40,7 +42,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 public class ItemRegistrar extends AbstractDeferredRegistrar<ItemDescriptor<?, ?, ? extends Item>, Item> {
-    private final HashMap<NlmcItemColor, List<ItemDescriptor<?, ?, ?>>> ITEM_COLOR_MAP = new HashMap<>();
+    private final HashMap<NlmcItemColor, List<ItemDescriptor<?, ?, ? extends Item>>> ITEM_COLOR_MAP = new HashMap<>();
     
     public ItemRegistrar(NlmcRegistrar modRegistrar) {
         super(modRegistrar, Registries.ITEM);
@@ -78,8 +80,8 @@ public class ItemRegistrar extends AbstractDeferredRegistrar<ItemDescriptor<?, ?
      * @author Marc-Eric Boury (TheNorm24) <webmaster@normslabs.net>
      * @since 2026-05-02 19:26
      */
-    public ItemDescriptor<GenericItemModel, GenericItemModel.GenericItemModelBuilder, NlmcGenericItem>.Builder createCustomGenericItem(String itemIdentifier) {
-        ItemDescriptor<GenericItemModel, GenericItemModel.GenericItemModelBuilder, NlmcGenericItem> descriptor
+    public ItemDescriptor<GenericItemModel, GenericItemModel.GenericItemModelBuilder, NlmcGenericItem>.Builder buildCustomGenericItem(String itemIdentifier) {
+        var descriptor
                 = new ItemDescriptor<>(
                         this.getNlmcRegistrar().getModNamespace(),
                         itemIdentifier,
@@ -88,28 +90,24 @@ public class ItemRegistrar extends AbstractDeferredRegistrar<ItemDescriptor<?, ?
         return descriptor.getBuilder();
     }
     
-    public ItemDescriptor<UniformCubeItemModel, UniformCubeItemModel.UniformCubeItemModelBuilder, NlmcGenericItem>.Builder createCustomUniformCubeItem(String itemIdentifier) {
-        ItemDescriptor<UniformCubeItemModel, UniformCubeItemModel.UniformCubeItemModelBuilder, NlmcGenericItem> descriptor
-                = new ItemDescriptor<>(
-                this.getNlmcRegistrar().getModNamespace(),
-                itemIdentifier,
-                new UniformCubeItemModel(),
-                NlmcGenericItem::new);
+    public ItemDescriptor<UniformCubeItemModel, UniformCubeItemModel.UniformCubeItemModelBuilder, NlmcGenericItem>.Builder buildCustomUniformCubeItem(String itemIdentifier) {
+        var descriptor = new ItemDescriptor<>(this.getNlmcRegistrar().getModNamespace(),
+                                              itemIdentifier,
+                                              new UniformCubeItemModel(),
+                                              NlmcGenericItem::new);
         return descriptor.getBuilder();
     }
     
-    public ItemDescriptor<CubeTopItemModel, CubeTopItemModel.CubeTopItemModelBuilder, NlmcGenericItem>.Builder createCustomCubeTopBottomItem(String itemIdentifier) {
-        ItemDescriptor<CubeTopItemModel, CubeTopItemModel.CubeTopItemModelBuilder, NlmcGenericItem> descriptor
-                = new ItemDescriptor<>(
-                this.getNlmcRegistrar().getModNamespace(),
-                itemIdentifier,
-                new CubeTopItemModel(),
-                NlmcGenericItem::new);
+    public ItemDescriptor<CubeTopItemModel, CubeTopItemModel.CubeTopItemModelBuilder, NlmcGenericItem>.Builder buildCustomCubeTopBottomItem(String itemIdentifier) {
+        var descriptor = new ItemDescriptor<>(this.getNlmcRegistrar().getModNamespace(),
+                                              itemIdentifier,
+                                              new CubeTopItemModel(),
+                                              NlmcGenericItem::new);
         return descriptor.getBuilder();
     }
     
-    public ItemDescriptor<CustomCubeItemModel, CustomCubeItemModel.CustomCubeItemModelBuilder, NlmcGenericItem>.Builder createCustomCubeItem(String itemIdentifier) {
-        ItemDescriptor<CustomCubeItemModel, CustomCubeItemModel.CustomCubeItemModelBuilder, NlmcGenericItem> descriptor
+    public ItemDescriptor<CustomCubeItemModel, CustomCubeItemModel.CustomCubeItemModelBuilder, NlmcGenericItem>.Builder buildCustomCubeItem(String itemIdentifier) {
+        var descriptor
                 = new ItemDescriptor<>(
                 this.getNlmcRegistrar().getModNamespace(),
                 itemIdentifier,
@@ -118,8 +116,8 @@ public class ItemRegistrar extends AbstractDeferredRegistrar<ItemDescriptor<?, ?
         return descriptor.getBuilder();
     }
     
-    public ItemDescriptor<GenericItemModel, GenericItemModel.GenericItemModelBuilder, NlmcAxeItem> createAxeItem(
-            String itemIdentifier,
+    public ItemDescriptor<GenericItemModel, GenericItemModel.GenericItemModelBuilder, NlmcAxeItem>.Builder buildAxeItem(
+            String materialName,
             Color materialColor,
             Tier toolTier,
             Rarity rarity,
@@ -130,10 +128,9 @@ public class ItemRegistrar extends AbstractDeferredRegistrar<ItemDescriptor<?, ?
             Map<Locales, String> displayNameTranslationsMap,
             List<Map<Locales, String>> tooltips) {
         
-        ItemDescriptor<GenericItemModel, GenericItemModel.GenericItemModelBuilder, NlmcAxeItem> descriptor
-                = new ItemDescriptor<>(
+        return new ItemDescriptor<>(
                 this.getNlmcRegistrar().getModNamespace(),
-                itemIdentifier,
+                materialName + "_axe",
                 new GenericItemModel(),
                 NlmcAxeItem::new)
                 .getBuilder().configureModel(
@@ -152,13 +149,11 @@ public class ItemRegistrar extends AbstractDeferredRegistrar<ItemDescriptor<?, ?
                 .addTags(ToolTypes.AXE.getTags())
                 .addToCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES)
                 .displayName(displayNameTranslationsMap)
-                .addTooltips(tooltips)
-                .build();
-        return this.register(descriptor);
+                .addTooltips(tooltips);
     }
     
-    public ItemDescriptor<GenericItemModel, GenericItemModel.GenericItemModelBuilder, NlmcPickaxeItem> createPickaxeItem(
-            String itemIdentifier,
+    public ItemDescriptor<GenericItemModel, GenericItemModel.GenericItemModelBuilder, NlmcPickaxeItem>.Builder buildPickaxeItem(
+            String materialName,
             Color materialColor,
             Tier toolTier,
             Rarity rarity,
@@ -169,10 +164,9 @@ public class ItemRegistrar extends AbstractDeferredRegistrar<ItemDescriptor<?, ?
             Map<Locales, String> displayNameTranslationsMap,
             List<Map<Locales, String>> tooltips) {
         
-        ItemDescriptor<GenericItemModel, GenericItemModel.GenericItemModelBuilder, NlmcPickaxeItem> descriptor
-                = new ItemDescriptor<>(
+        return new ItemDescriptor<>(
                 this.getNlmcRegistrar().getModNamespace(),
-                itemIdentifier,
+                materialName + "_pickaxe",
                 new GenericItemModel(),
                 NlmcPickaxeItem::new)
                 .getBuilder().configureModel(
@@ -191,13 +185,11 @@ public class ItemRegistrar extends AbstractDeferredRegistrar<ItemDescriptor<?, ?
                 .addTags(ToolTypes.PICKAXE.getTags())
                 .addToCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES)
                 .displayName(displayNameTranslationsMap)
-                .addTooltips(tooltips)
-                .build();
-        return this.register(descriptor);
+                .addTooltips(tooltips);
     }
     
-    public ItemDescriptor<GenericItemModel, GenericItemModel.GenericItemModelBuilder, NlmcShovelItem> createShovelItem(
-            String itemIdentifier,
+    public ItemDescriptor<GenericItemModel, GenericItemModel.GenericItemModelBuilder, NlmcShovelItem>.Builder buildShovelItem(
+            String materialName,
             Color materialColor,
             Tier toolTier,
             Rarity rarity,
@@ -208,10 +200,9 @@ public class ItemRegistrar extends AbstractDeferredRegistrar<ItemDescriptor<?, ?
             Map<Locales, String> displayNameTranslationsMap,
             List<Map<Locales, String>> tooltips) {
         
-        ItemDescriptor<GenericItemModel, GenericItemModel.GenericItemModelBuilder, NlmcShovelItem> descriptor
-                = new ItemDescriptor<>(
+        return new ItemDescriptor<>(
                 this.getNlmcRegistrar().getModNamespace(),
-                itemIdentifier,
+                materialName + "_shovel",
                 new GenericItemModel(),
                 NlmcShovelItem::new)
                 .getBuilder().configureModel(
@@ -230,13 +221,11 @@ public class ItemRegistrar extends AbstractDeferredRegistrar<ItemDescriptor<?, ?
                 .addTags(ToolTypes.SHOVEL.getTags())
                 .addToCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES)
                 .displayName(displayNameTranslationsMap)
-                .addTooltips(tooltips)
-                .build();
-        return this.register(descriptor);
+                .addTooltips(tooltips);
     }
     
-    public ItemDescriptor<GenericItemModel, GenericItemModel.GenericItemModelBuilder, NlmcHoeItem> createHoeItem(
-            String itemIdentifier,
+    public ItemDescriptor<GenericItemModel, GenericItemModel.GenericItemModelBuilder, NlmcHoeItem>.Builder buildHoeItem(
+            String materialName,
             Color materialColor,
             Tier toolTier,
             Rarity rarity,
@@ -247,10 +236,9 @@ public class ItemRegistrar extends AbstractDeferredRegistrar<ItemDescriptor<?, ?
             Map<Locales, String> displayNameTranslationsMap,
             List<Map<Locales, String>> tooltips) {
         
-        ItemDescriptor<GenericItemModel, GenericItemModel.GenericItemModelBuilder, NlmcHoeItem> descriptor
-                = new ItemDescriptor<>(
+        return new ItemDescriptor<>(
                 this.getNlmcRegistrar().getModNamespace(),
-                itemIdentifier,
+                materialName + "_hoe",
                 new GenericItemModel(),
                 NlmcHoeItem::new)
                 .getBuilder().configureModel(
@@ -269,13 +257,11 @@ public class ItemRegistrar extends AbstractDeferredRegistrar<ItemDescriptor<?, ?
                 .addTags(ToolTypes.HOES.getTags())
                 .addToCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES)
                 .displayName(displayNameTranslationsMap)
-                .addTooltips(tooltips)
-                .build();
-        return this.register(descriptor);
+                .addTooltips(tooltips);
     }
     
-    public ItemDescriptor<GenericItemModel, GenericItemModel.GenericItemModelBuilder, NlmcSwordItem> createSwordItem(
-            String itemIdentifier,
+    public ItemDescriptor<GenericItemModel, GenericItemModel.GenericItemModelBuilder, NlmcSwordItem>.Builder buildSwordItem(
+            String materialName,
             Color materialColor,
             Tier toolTier,
             Rarity rarity,
@@ -286,10 +272,9 @@ public class ItemRegistrar extends AbstractDeferredRegistrar<ItemDescriptor<?, ?
             Map<Locales, String> displayNameTranslationsMap,
             List<Map<Locales, String>> tooltips) {
         
-        ItemDescriptor<GenericItemModel, GenericItemModel.GenericItemModelBuilder, NlmcSwordItem> descriptor
-                = new ItemDescriptor<>(
+        return new ItemDescriptor<>(
                 this.getNlmcRegistrar().getModNamespace(),
-                itemIdentifier,
+                materialName + "_sword",
                 new GenericItemModel(),
                 NlmcSwordItem::new)
                 .getBuilder().configureModel(
@@ -308,45 +293,34 @@ public class ItemRegistrar extends AbstractDeferredRegistrar<ItemDescriptor<?, ?
                 .addTags(ToolTypes.SWORD.getTags())
                 .addToCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES)
                 .displayName(displayNameTranslationsMap)
-                .addTooltips(tooltips)
-                .build();
-        return this.register(descriptor);
+                .addTooltips(tooltips);
     }
     
-    public ItemDescriptor<GenericItemModel, GenericItemModel.GenericItemModelBuilder, NlmcGenericItem> createRawOreItem(
+    public ItemDescriptor<GenericItemModel, GenericItemModel.GenericItemModelBuilder, NlmcGenericItem>.Builder buildRawOreItem(
             String materialName,
             Color materialColor,
-            int randomSeed,
             Rarity rarity,
             boolean isFireproof,
             Map<Locales, String> displayNameTranslationsMap,
             List<Map<Locales, String>> tooltips) {
         
-        ItemDescriptor<GenericItemModel, GenericItemModel.GenericItemModelBuilder, NlmcGenericItem> descriptor
-                = new ItemDescriptor<>(
+        return new ItemDescriptor<>(
                 this.getNlmcRegistrar().getModNamespace(),
                 "raw_"+materialName.toLowerCase()+"_ore",
                 new GenericItemModel(),
                 NlmcGenericItem::new)
-                .getBuilder().configureModel(
-                        modelBuilder -> {
-                            ResourceLocation textureLocation = switch (randomSeed % 4) {
-                                case 1 -> DynamicTextures.Ores.RAW_ORE_1;
-                                case 2 -> DynamicTextures.Ores.RAW_ORE_2;
-                                case 3 -> DynamicTextures.Ores.RAW_ORE_3;
-                                default -> DynamicTextures.Ores.RAW_ORE_0;
-                            };
-                            return modelBuilder.addTextureLayer(textureLocation, materialColor).build();
-                        }
-                ).addTags(ToolTypes.SWORD.getTags())
-                .addToCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES)
+                .getBuilder().configureModel(modelBuilder ->
+                            modelBuilder.addTextureLayer(DynamicTextures.Ores.selectRawOreTextureForIdentifier(materialName), materialColor).build()
+                ).addTags(ItemTypes.METAL_RAW_ORE.getTags())
+                .setRarity(rarity)
+                .setFireResistant(isFireproof)
+                .addToCreativeTab(CreativeModeTabs.INGREDIENTS)
                 .displayName(displayNameTranslationsMap)
-                .addTooltips(tooltips)
-                .build();
-        return this.register(descriptor);
+                .addTooltips(tooltips);
     }
     
     // </editor-fold>
+    
     
     protected void onCreativeModeTabContentBuild(final BuildCreativeModeTabContentsEvent event) {
         this.nlmcRegistry.forEach((resourceLocation, itemDescriptor) -> {
@@ -375,7 +349,7 @@ public class ItemRegistrar extends AbstractDeferredRegistrar<ItemDescriptor<?, ?
         gen.addProvider(event.includeClient(), itemModelProvider);
     }
     
-    private void registerItemColor(ItemDescriptor<?, ?, ?> descriptor) {
+    private void registerItemColor(ItemDescriptor<?, ?, ? extends Item> descriptor) {
         if (descriptor.getModelDescriptor().getColorDescriptor().needsRegistration()) {
             NlmcItemColor matchingExistingItemColor = null;
             for (NlmcItemColor itemColor : this.ITEM_COLOR_MAP.keySet()) {
@@ -387,7 +361,7 @@ public class ItemRegistrar extends AbstractDeferredRegistrar<ItemDescriptor<?, ?
             if (matchingExistingItemColor != null) {
                 this.ITEM_COLOR_MAP.get(matchingExistingItemColor).add(descriptor);
             } else {
-                List<ItemDescriptor<?, ?, ?>> itemColorDescriptors = new ArrayList<>();
+                List<ItemDescriptor<?, ?, ? extends Item>> itemColorDescriptors = new ArrayList<>();
                 itemColorDescriptors.add(descriptor);
                 this.ITEM_COLOR_MAP.put(descriptor.getModelDescriptor().getColorDescriptor(), itemColorDescriptors);
             }

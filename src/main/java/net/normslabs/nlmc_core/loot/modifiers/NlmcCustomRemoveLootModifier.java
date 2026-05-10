@@ -24,40 +24,26 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
-public class NlmcAddLootModifier extends LootModifier implements INlmcLootModifier<NlmcAddLootModifier> {
+public class NlmcCustomRemoveLootModifier
+        extends LootModifier implements INlmcLootModifier<NlmcCustomRemoveLootModifier> {
     
-    public static final String CODEC_NAME = "nlmc_add_loot_modifier";
-    public static final Supplier<Codec<NlmcAddLootModifier>> CODEC
+    public static final String CODEC_NAME = "nlmc_custom_remove_loot_modifier";
+    public static final Supplier<Codec<NlmcCustomRemoveLootModifier>> CODEC
             = Suppliers.memoize(() -> RecordCodecBuilder.create(inst -> codecStart(inst).and(
-                    inst.group(
                                 ForgeRegistries.ITEMS.getCodec()
-                                                     .fieldOf("itemToAdd")
-                                                     .forGetter(modifier -> modifier.itemToAdd),
-                                Codec.INT
-                                                     .fieldOf("itemCount")
-                                                     .forGetter(modifier -> modifier.itemCount)))
-                        .apply(inst, NlmcAddLootModifier::new)));
-    private final Item itemToAdd;
-    private final int itemCount;
+                                                     .fieldOf("itemToRemove")
+                                                     .forGetter(modifier -> modifier.itemToRemove))
+                        .apply(inst, NlmcCustomRemoveLootModifier::new)));
+    private final Item itemToRemove;
     
     /**
      * Constructs a LootModifier.
      *
      * @param conditionsIn the ILootConditions that need to be matched before the loot is modified.
      */
-    protected NlmcAddLootModifier(LootItemCondition[] conditionsIn, Item itemToAdd, int itemCount) {
+    protected NlmcCustomRemoveLootModifier(LootItemCondition[] conditionsIn, Item itemToRemove) {
         super(conditionsIn);
-        this.itemToAdd = itemToAdd;
-        this.itemCount = itemCount;
-    }
-    
-    /**
-     * Constructs a LootModifier.
-     *
-     * @param conditionsIn the ILootConditions that need to be matched before the loot is modified.
-     */
-    protected NlmcAddLootModifier(LootItemCondition[] conditionsIn, Item itemToAdd) {
-        this(conditionsIn, itemToAdd, 1);
+        this.itemToRemove = itemToRemove;
     }
     
     @Override
@@ -68,8 +54,7 @@ public class NlmcAddLootModifier extends LootModifier implements INlmcLootModifi
                 return generatedLoot;
             }
         }
-        
-        generatedLoot.add(new ItemStack(this.itemToAdd, this.itemCount));
+        generatedLoot.removeIf(stack -> stack.is(this.itemToRemove));
         
         return generatedLoot;
     }
@@ -81,11 +66,11 @@ public class NlmcAddLootModifier extends LootModifier implements INlmcLootModifi
     
     @Override
     public String getCodecName() {
-        return NlmcAddLootModifier.CODEC_NAME;
+        return NlmcCustomRemoveLootModifier.CODEC_NAME;
     }
     
     @Override
-    public Supplier<Codec<NlmcAddLootModifier>> getCodecSupplier() {
-        return NlmcAddLootModifier.CODEC;
+    public Supplier<Codec<NlmcCustomRemoveLootModifier>> getCodecSupplier() {
+        return NlmcCustomRemoveLootModifier.CODEC;
     }
 }

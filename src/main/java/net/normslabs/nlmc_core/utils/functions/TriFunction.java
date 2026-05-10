@@ -1,0 +1,14 @@
+/*
+ * Project: NlmcCore
+ * @author Marc-Eric Boury (TheNorm24) <webmaster@normslabs.net>
+ * @copyright (c) Marc-Eric Boury 2025 - All rights reserved
+ * @since 2025-07-20 03:07
+ */
+
+package net.normslabs.nlmc_core.utils.functions;
+
+@FunctionalInterface
+public interface TriFunction<T1, T2, T3, TReturn> {
+    TReturn apply(T1 first, T2 second, T3 third);
+    
+}

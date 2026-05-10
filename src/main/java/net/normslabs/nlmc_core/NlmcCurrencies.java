@@ -52,7 +52,7 @@ public class NlmcCurrencies {
     public static void register(NlmcRegistrar registrar) {
         
         for (CurrencyItems currency : CurrencyItems.values()) {
-            var itemBuilder = registrar.ITEMS.createCustomGenericItem(currency.getItemIdentifier())
+            var itemBuilder = registrar.ITEMS.buildCustomGenericItem(currency.getItemIdentifier())
                            .setMaxStackSize(100)
                            .setFireResistant(false)
                                          .configureModel((modelBuilder)

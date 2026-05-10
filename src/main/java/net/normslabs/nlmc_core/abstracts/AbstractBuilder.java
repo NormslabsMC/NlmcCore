@@ -13,9 +13,9 @@ import java.util.Optional;
 import java.util.Queue;
 import java.util.function.Consumer;
 
-public abstract class Builder<
-        TSelf extends Builder<TSelf, TBuilt>,
-        TBuilt extends Buildable<TBuilt, TSelf>>
+public abstract class AbstractBuilder<
+        TSelf extends AbstractBuilder<TSelf, TBuilt>,
+        TBuilt extends AbstractBuildable<TBuilt, TSelf>>
         extends AbstractSelfReferencing<TSelf>
         implements IBuilder<TSelf, TBuilt> {
     
@@ -23,7 +23,7 @@ public abstract class Builder<
     private final Queue<Consumer<TBuilt>> preBuildActions;
     private final Queue<Consumer<TBuilt>> postBuildActions;
     
-    protected Builder(TBuilt initialBuildable) {
+    protected AbstractBuilder(TBuilt initialBuildable) {
         if (initialBuildable.isBuilt()) {
             throw new IllegalStateException("Cannot build a buildable that has already been built.");
         }

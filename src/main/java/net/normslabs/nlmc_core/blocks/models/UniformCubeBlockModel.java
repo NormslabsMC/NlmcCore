@@ -11,13 +11,16 @@ package net.normslabs.nlmc_core.blocks.models;
 import net.minecraft.resources.ResourceLocation;
 import net.normslabs.nlmc_core.blocks.models.abstracts.BlockModel;
 import net.normslabs.nlmc_core.exceptions.ValidationException;
-import net.normslabs.nlmc_core.items.NlmcItemModelManager;
-import net.normslabs.nlmc_core.items.models.abstracts.ItemModel;
+import net.normslabs.nlmc_core.datagen.NlmcItemModelManager;
+import net.normslabs.nlmc_core.items.models.UniformCubeItemModel;
 import net.normslabs.nlmc_core.rendering.Texture;
 import net.normslabs.nlmc_core.utils.Color;
 
 public class UniformCubeBlockModel extends
-        BlockModel<UniformCubeBlockModel, UniformCubeBlockModel.UniformCubeBlockModelBuilder> {
+        BlockModel<UniformCubeBlockModel,
+                UniformCubeBlockModel.UniformCubeBlockModelBuilder,
+                UniformCubeItemModel,
+                UniformCubeItemModel.UniformCubeItemModelBuilder> {
     
     public UniformCubeBlockModel() {
         super(NlmcItemModelManager.MC_CUBEALL_ITEM_MODEL_LOC);
@@ -61,7 +64,16 @@ public class UniformCubeBlockModel extends
         this.addTextureLayer(texture);
     }
     
-    public class UniformCubeBlockModelBuilder extends BlockModel<UniformCubeBlockModel, UniformCubeBlockModelBuilder>.BlockModelBuilder {
+    @Override
+    public UniformCubeItemModel toItemModel() {
+        return new UniformCubeItemModel();
+    }
+    
+    public class UniformCubeBlockModelBuilder extends BlockModel<
+            UniformCubeBlockModel,
+            UniformCubeBlockModelBuilder,
+            UniformCubeItemModel,
+            UniformCubeItemModel.UniformCubeItemModelBuilder>.BlockModelBuilder {
         
         public UniformCubeBlockModelBuilder(UniformCubeBlockModel blankModel) {
             super(blankModel);

@@ -8,10 +8,11 @@
 package net.normslabs.nlmc_core.items.properties;
 
 
-import net.normslabs.nlmc_core.abstracts.Buildable;
+import net.normslabs.nlmc_core.abstracts.AbstractBuilder;
+import net.normslabs.nlmc_core.abstracts.AbstractBuildable;
 import net.normslabs.nlmc_core.items.ItemDescriptor;
 
-public class ItemFuelProperties extends Buildable<ItemFuelProperties, ItemFuelProperties.Builder> {
+public class ItemFuelProperties extends AbstractBuildable<ItemFuelProperties, ItemFuelProperties.Builder> {
     private final ItemDescriptor<?,?,?> parentDescriptor;
     private int burnTimeInTicks;
     
@@ -32,6 +33,11 @@ public class ItemFuelProperties extends Buildable<ItemFuelProperties, ItemFuelPr
         return new Builder(this);
     }
     
+    @Override
+    public void onBuild() {
+    
+    }
+    
     public int getBurnTimeInTicks() {
         return this.burnTimeInTicks;
     }
@@ -40,7 +46,7 @@ public class ItemFuelProperties extends Buildable<ItemFuelProperties, ItemFuelPr
         this.burnTimeInTicks = burnTimeInTicks;
     }
     
-    public class Builder extends net.normslabs.nlmc_core.abstracts.Builder<Builder, ItemFuelProperties> {
+    public class Builder extends AbstractBuilder<Builder, ItemFuelProperties> {
         
         public Builder(ItemFuelProperties initialBuildable) {
             super(initialBuildable);

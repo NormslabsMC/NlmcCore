@@ -9,8 +9,9 @@ package net.normslabs.nlmc_core.items.models;
 
 
 import net.minecraft.resources.ResourceLocation;
+import net.normslabs.nlmc_core.blocks.models.CustomCubeBlockModel;
 import net.normslabs.nlmc_core.exceptions.ValidationException;
-import net.normslabs.nlmc_core.items.NlmcItemModelManager;
+import net.normslabs.nlmc_core.datagen.NlmcItemModelManager;
 import net.normslabs.nlmc_core.items.models.abstracts.ItemModel;
 import net.normslabs.nlmc_core.rendering.Texture;
 import net.normslabs.nlmc_core.utils.Color;
@@ -27,6 +28,15 @@ public class CustomCubeItemModel extends
     
     public CustomCubeItemModel() {
         super(NlmcItemModelManager.MC_CUSTOM_CUBE_ITEM_MODEL_LOC);
+    }
+    
+    public static CustomCubeItemModel createFromBlockModel(CustomCubeBlockModel blockModel) {
+        CustomCubeItemModel instance = new CustomCubeItemModel();
+        instance.setRenderer(blockModel.getRenderer());
+        for (Texture texture : blockModel.getTextureMap().values()) {
+            instance.addTextureLayer(texture);
+        }
+        return instance;
     }
     
     @Override

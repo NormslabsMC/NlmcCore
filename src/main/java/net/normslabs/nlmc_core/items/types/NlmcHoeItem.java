@@ -19,9 +19,9 @@ import java.util.List;
 
 public class NlmcHoeItem extends HoeItem {
     
-    private final ItemDescriptor<?,?> descriptor;
+    private final ItemDescriptor<?,?,?> descriptor;
     
-    public NlmcHoeItem(ItemDescriptor<?,?> descriptor) {
+    public NlmcHoeItem(ItemDescriptor<?,?,?> descriptor) {
         super(descriptor.getToolProperties().getToolTier(),
               (int) descriptor.getToolProperties().getAttackDamage(),
               descriptor.getToolProperties().getBaseAttackSpeed(),

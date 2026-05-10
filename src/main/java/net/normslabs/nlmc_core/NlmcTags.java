@@ -13,6 +13,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Fluid;
 import net.normslabs.nlmc_core.infrastructure.NlmcRegistrar;
 import net.normslabs.nlmc_core.utils.ResLocUtils;
 import net.normslabs.nlmc_core.utils.TagUtils;
@@ -696,6 +697,43 @@ public class NlmcTags {
                 BlockTags.create(ResourceLocation.fromNamespaceAndPath(ResLocUtils.MC_NAMESPACE, "needs_titanium_tool"));
         public static final TagKey<Block> NEEDS_TUNGSTEN_CARBIDE_TOOL =
                 BlockTags.create(ResourceLocation.fromNamespaceAndPath(ResLocUtils.MC_NAMESPACE, "needs_tungsten_carbide_tool"));
+        
+    }
+    
+    public static class Fluids {
+        public static final TagKey<Fluid> ALL_FLUIDS = TagUtils.createFluidTag(ResourceLocation.fromNamespaceAndPath(ResLocUtils.FORGE_NAMESPACE, "fluids"));
+        
+        public static final TagKey<Fluid> FUELS = TagUtils.tagAppendPath(Fluids.ALL_FLUIDS, "fuel");
+        
+        public static final TagKey<Fluid> OIL = TagUtils.tagAppendPath(Fluids.ALL_FLUIDS, "oil");
+        public static final TagKey<Fluid> CREOSOTE = TagUtils.tagAppendPath(Fluids.ALL_FLUIDS, "creosote");
+        public static final TagKey<Fluid> BIODIESEL = TagUtils.tagAppendPath(Fluids.ALL_FLUIDS, "biodiesel");
+        public static final TagKey<Fluid> DIESEL = TagUtils.tagAppendPath(Fluids.ALL_FLUIDS, "diesel");
+        public static final TagKey<Fluid> GASOLINE = TagUtils.tagAppendPath(Fluids.ALL_FLUIDS, "gasoline");
+        public static final TagKey<Fluid> LPG = TagUtils.tagAppendPath(Fluids.ALL_FLUIDS, "lpg");
+        public static final TagKey<Fluid> PROPANE = TagUtils.tagAppendPath(Fluids.ALL_FLUIDS, "propane");
+        public static final TagKey<Fluid> BUTHANE = TagUtils.tagAppendPath(Fluids.ALL_FLUIDS, "buthane");
+        public static final TagKey<Fluid> ETHANOL = TagUtils.tagAppendPath(Fluids.ALL_FLUIDS, "ethanol");
+        public static final TagKey<Fluid> BIOETHANOL = TagUtils.tagAppendPath(Fluids.ALL_FLUIDS, "bioethanol");
+        public static final TagKey<Fluid> OIL = TagUtils.tagAppendPath(Fluids.ALL_FLUIDS, "oil");
+        public static final TagKey<Fluid> OIL = TagUtils.tagAppendPath(Fluids.ALL_FLUIDS, "oil");
+        public static final TagKey<Fluid> OIL = TagUtils.tagAppendPath(Fluids.ALL_FLUIDS, "oil");
+        public static final TagKey<Fluid> OIL = TagUtils.tagAppendPath(Fluids.ALL_FLUIDS, "oil");
+        public static final TagKey<Fluid> OIL = TagUtils.tagAppendPath(Fluids.ALL_FLUIDS, "oil");
+        public static final TagKey<Fluid> OIL = TagUtils.tagAppendPath(Fluids.ALL_FLUIDS, "oil");
+        public static final TagKey<Fluid> OIL = TagUtils.tagAppendPath(Fluids.ALL_FLUIDS, "oil");
+        public static final TagKey<Fluid> OIL = TagUtils.tagAppendPath(Fluids.ALL_FLUIDS, "oil");
+        public static final TagKey<Fluid> OIL = TagUtils.tagAppendPath(Fluids.ALL_FLUIDS, "oil");
+        public static final TagKey<Fluid> OIL = TagUtils.tagAppendPath(Fluids.ALL_FLUIDS, "oil");
+        
+        public static class Liquids {
+        
+        }
+        
+        public static class Gases {
+        
+        }
+        
         
     }
 

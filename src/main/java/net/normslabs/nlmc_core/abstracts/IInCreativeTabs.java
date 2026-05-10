@@ -12,6 +12,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Interface for descriptor objects that can be displayed in creative mode tabs.
@@ -22,13 +23,13 @@ import java.util.List;
 public interface IInCreativeTabs {
     
     /**
-     * Returns the list of creative tabs the object should be added to.
+     * Returns the set of creative tabs the object should be added to.
      *
-     * @return the list of creative tabs the object should be added to.
+     * @return the set of creative tabs the object should be added to.
      * @author Marc-Eric Boury (TheNorm24) <webmaster@normslabs.net>
      * @since 2026-05-04 02:36
      */
-    List<ResourceKey<CreativeModeTab>> getCreativeTabs();
+    Set<ResourceKey<CreativeModeTab>> getCreativeTabs();
     
     /**
      * Add the object to a creative mode tab.

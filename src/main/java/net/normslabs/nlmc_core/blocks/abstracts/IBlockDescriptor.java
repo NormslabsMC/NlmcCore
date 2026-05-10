@@ -8,8 +8,32 @@
 package net.normslabs.nlmc_core.blocks.abstracts;
 
 
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.normslabs.nlmc_core.abstracts.IRegistrable;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.normslabs.nlmc_core.abstracts.*;
+import net.normslabs.nlmc_core.blocks.models.abstracts.IBlockModel;
+import net.normslabs.nlmc_core.blocks.models.abstracts.IHasBlockModel;
+import net.normslabs.nlmc_core.infrastructure.abstracts.IDeferredRegistrar;
+import net.normslabs.nlmc_core.items.abstracts.IItemDescriptor;
+import net.normslabs.nlmc_core.items.models.abstracts.IHasItemModel;
+import net.normslabs.nlmc_core.items.models.abstracts.IItemModel;
 
-public interface IBlockDescriptor extends IRegistrable<Block>, IHasBlockModelDescriptor {
+public interface IBlockDescriptor<
+        TSelf extends IBlockDescriptor<TSelf, TBuilder, TModel, TModelBuilder, TNlmcType, TRegistrar>,
+        TBuilder extends IBuilder<TBuilder, TSelf>,
+        TModel extends IBlockModel<TModel, TModelBuilder>,
+        TModelBuilder extends IBuilder<TModelBuilder, TModel>,
+        TNlmcType extends Block,
+        TRegistrar extends IDeferredRegistrar<? super TSelf, Block>>
+        extends IDescriptor<TSelf, TBuilder>,
+        IMcRegistrable<TSelf, TRegistrar, TNlmcType, Block>,
+        IHasBlockModel<TModel, TModelBuilder>,
+        IHasDisplayedName,
+        IHasTooltips,
+        ITaggable<Block>,
+        IBuildable<TSelf, TBuilder> {
+    
+    BlockBehaviour.Properties getMcBlockProperties();
+    
 }

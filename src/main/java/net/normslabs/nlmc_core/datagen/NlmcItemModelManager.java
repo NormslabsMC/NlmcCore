@@ -5,7 +5,7 @@
  * @since 2026-04-29 16:05
  */
 
-package net.normslabs.nlmc_core.items;
+package net.normslabs.nlmc_core.datagen;
 
 
 import net.minecraft.data.PackOutput;
@@ -14,6 +14,8 @@ import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.normslabs.nlmc_core.abstracts.IModel;
+import net.normslabs.nlmc_core.items.ItemDescriptor;
+import net.normslabs.nlmc_core.items.ItemRegistrar;
 import net.normslabs.nlmc_core.items.models.CubeTopItemModel;
 import net.normslabs.nlmc_core.items.models.CustomCubeItemModel;
 import net.normslabs.nlmc_core.items.models.GenericItemModel;

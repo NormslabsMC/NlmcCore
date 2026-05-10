@@ -13,13 +13,17 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.normslabs.nlmc_core.abstracts.AbstractTooltippedRegistrable;
 import net.normslabs.nlmc_core.abstracts.IBuilder;
 import net.normslabs.nlmc_core.items.abstracts.IItemDescriptor;
+import net.normslabs.nlmc_core.items.enums.ToolTypes;
 import net.normslabs.nlmc_core.items.models.abstracts.IItemModel;
 import net.normslabs.nlmc_core.items.properties.*;
+import net.normslabs.nlmc_core.translations.Locales;
+import net.normslabs.nlmc_core.utils.StringUtils;
 import net.normslabs.nlmc_core.utils.TagUtils;
 
 import java.util.*;
@@ -43,8 +47,8 @@ public class ItemDescriptor<
     private boolean isFuel;
     private boolean isTool;
     private boolean isArmor;
-    private final List<ResourceKey<CreativeModeTab>> creativeTabs;
-    protected final List<TagKey<Item>> tags;
+    private final Set<ResourceKey<CreativeModeTab>> creativeTabs;
+    protected final Set<TagKey<Item>> tags;
     private final ItemFoodProperties itemFoodProperties;
     private final ItemFuelProperties itemFuelProperties;
     private final ItemToolProperties itemToolProperties;
@@ -61,9 +65,10 @@ public class ItemDescriptor<
     public ItemDescriptor(String objectNamespace, String objectIdentifier, TModel initialModel,
                           Function<ItemDescriptor<TModel, TModelBuilder, TNlmcType>, TNlmcType> objectCreator) {
         super(objectNamespace, objectIdentifier, objectCreator, "items");
+        this.addDisplayNameTranslation(Locales.ENGLISH_US, StringUtils.identifierToDisplayName(objectIdentifier));
         this.modelDescriptor = initialModel;
-        this.creativeTabs = new ArrayList<>();
-        this.tags = new ArrayList<>();
+        this.creativeTabs = new HashSet<>();
+        this.tags = new HashSet<>();
         this.itemFoodProperties = new ItemFoodProperties(this);
         this.itemFuelProperties = new ItemFuelProperties(this);
         this.itemToolProperties = new ItemToolProperties(this);
@@ -220,7 +225,7 @@ public class ItemDescriptor<
     }
     
     @Override
-    public Builder getBuilder() {
+    public ItemDescriptor<TModel, TModelBuilder, TNlmcType>.Builder getBuilder() {
         return new Builder(this);
     }
     
@@ -230,12 +235,12 @@ public class ItemDescriptor<
     }
     
     @Override
-    public List<ResourceKey<CreativeModeTab>> getCreativeTabs() {
+    public Set<ResourceKey<CreativeModeTab>> getCreativeTabs() {
         return this.creativeTabs;
     }
     
     @Override
-    public List<TagKey<Item>> getTags() {
+    public Set<TagKey<Item>> getTags() {
         return this.tags;
     }
     
@@ -356,26 +361,33 @@ public class ItemDescriptor<
         }
         
         public Builder isFood(Function<ItemFoodProperties.Builder, ItemFoodProperties> buildFunction) {
-            buildFunction.apply(this.buildable.getFoodProperties().getBuilder()
-                                              .registerPostBuildAction((foodProps) -> this.buildable.isFood = true));
+            this.buildable.isFood = true;
+            buildFunction.apply(this.buildable.getFoodProperties().getBuilder());
+            this.addToCreativeTab(CreativeModeTabs.FOOD_AND_DRINKS);
             return this.self();
         }
         
         public Builder isFuel(Function<ItemFuelProperties.Builder, ItemFuelProperties> buildFunction) {
-            buildFunction.apply(this.buildable.getFuelProperties().getBuilder()
-                                              .registerPostBuildAction((fuelProps) -> this.buildable.isFuel = true));
+            this.buildable.isFuel = true;
+            buildFunction.apply(this.buildable.getFuelProperties().getBuilder());
             return this.self();
         }
         
         public Builder isTool(Function<ItemToolProperties.Builder, ItemToolProperties> buildFunction) {
-            buildFunction.apply(this.buildable.getToolProperties().getBuilder()
-                                              .registerPostBuildAction((toolProps) -> this.buildable.isTool = true));
+            this.buildable.isTool = true;
+            buildFunction.apply(this.buildable.getToolProperties().getBuilder());
+            if (ToolTypes.COMBAT_TOOL_TYPES.contains(this.buildable.getToolProperties().getToolType())) {
+                this.addToCreativeTab(CreativeModeTabs.COMBAT);
+            } else {
+                this.addToCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES);
+            }
             return this.self();
         }
         
         public Builder isArmor(Function<ItemArmorProperties.Builder, ItemArmorProperties> buildFunction) {
-            buildFunction.apply(this.buildable.getArmorProperties().getBuilder()
-                                              .registerPostBuildAction((armorProps) -> this.buildable.isArmor = true));
+            this.buildable.isArmor = true;
+            buildFunction.apply(this.buildable.getArmorProperties().getBuilder());
+            this.addToCreativeTab(CreativeModeTabs.COMBAT);
             return this.self();
         }
         

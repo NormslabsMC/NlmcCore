@@ -10,16 +10,16 @@ package net.normslabs.nlmc_core.loot;
 
 import com.mojang.serialization.Codec;
 import net.minecraftforge.common.loot.LootModifier;
-import net.normslabs.nlmc_core.loot.modifiers.NlmcAddLootModifier;
-import net.normslabs.nlmc_core.loot.modifiers.NlmcRemoveLootModifier;
-import net.normslabs.nlmc_core.loot.modifiers.NlmcReplaceItemModifier;
+import net.normslabs.nlmc_core.loot.modifiers.NlmcCustomAddLootModifier;
+import net.normslabs.nlmc_core.loot.modifiers.NlmcCustomRemoveLootModifier;
+import net.normslabs.nlmc_core.loot.modifiers.NlmcCustomReplaceLootModifier;
 
 import java.util.function.Supplier;
 
 public enum LootModifierTypes {
-    ADD_ITEM(NlmcAddLootModifier.CODEC_NAME, NlmcAddLootModifier.CODEC),
-    REMOVE_ITEM(NlmcRemoveLootModifier.CODEC_NAME, NlmcRemoveLootModifier.CODEC),
-    REPLACE_ITEM(NlmcReplaceItemModifier.CODEC_NAME, NlmcReplaceItemModifier.CODEC);
+    ADD_ITEM(NlmcCustomAddLootModifier.CODEC_NAME, NlmcCustomAddLootModifier.CODEC),
+    REMOVE_ITEM(NlmcCustomRemoveLootModifier.CODEC_NAME, NlmcCustomRemoveLootModifier.CODEC),
+    REPLACE_ITEM(NlmcCustomReplaceLootModifier.CODEC_NAME, NlmcCustomReplaceLootModifier.CODEC);
     
     private final String identifier;
     private final Supplier<? extends Codec<? extends LootModifier>> codecSupplier;

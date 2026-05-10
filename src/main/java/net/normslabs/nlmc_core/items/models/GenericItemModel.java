@@ -10,7 +10,7 @@ package net.normslabs.nlmc_core.items.models;
 
 import net.minecraft.resources.ResourceLocation;
 import net.normslabs.nlmc_core.exceptions.ValidationException;
-import net.normslabs.nlmc_core.items.NlmcItemModelManager;
+import net.normslabs.nlmc_core.datagen.NlmcItemModelManager;
 import net.normslabs.nlmc_core.items.models.abstracts.ItemModel;
 import net.normslabs.nlmc_core.rendering.Texture;
 import net.normslabs.nlmc_core.utils.Color;

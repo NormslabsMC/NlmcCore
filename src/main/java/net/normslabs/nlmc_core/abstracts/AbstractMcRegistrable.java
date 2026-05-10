@@ -15,7 +15,7 @@ import java.util.function.Function;
 
 public abstract class AbstractMcRegistrable<
         TSelf extends AbstractMcRegistrable<TSelf, TBuilder, TRegistrar, TNlmcType, TMcType>,
-        TBuilder extends Builder<TBuilder, TSelf>,
+        TBuilder extends AbstractBuilder<TBuilder, TSelf>,
         TRegistrar extends IDeferredRegistrar<? super TSelf, TMcType>,
         TNlmcType extends TMcType,
         TMcType>
@@ -26,7 +26,7 @@ public abstract class AbstractMcRegistrable<
     protected ResourceKey<TMcType> registeredResourceKey;
     
     protected AbstractMcRegistrable(String objectNamespace, String objectIdentifier,
-                                  Function<TSelf, TNlmcType> objectCreatorFunction) {
+                                  Function<? super TSelf, TNlmcType> objectCreatorFunction) {
         super(objectNamespace, objectIdentifier, objectCreatorFunction);
     }
     

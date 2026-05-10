@@ -19,9 +19,9 @@ import java.util.List;
 
 public class NlmcSwordItem extends SwordItem {
     
-    private final ItemDescriptor<?,?> descriptor;
+    private final ItemDescriptor<?,?,?> descriptor;
     
-    public NlmcSwordItem(ItemDescriptor<?,?> descriptor) {
+    public NlmcSwordItem(ItemDescriptor<?,?,?> descriptor) {
         super(descriptor.getToolProperties().getToolTier(),
               (int) descriptor.getToolProperties().getAttackDamage(),
               descriptor.getToolProperties().getBaseAttackSpeed(),

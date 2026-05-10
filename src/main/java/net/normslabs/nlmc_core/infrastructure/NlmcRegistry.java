@@ -14,13 +14,8 @@ import net.normslabs.nlmc_core.infrastructure.abstracts.IRegistrar;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
-import java.util.function.Function;
+import java.util.*;
+import java.util.function.*;
 
 /**
  * Custom {@link Map}-like data storage type that represent a registry for
@@ -40,15 +35,31 @@ public class NlmcRegistry<TRegistrable extends IRegistrable<? extends TRegistrab
     
     public NlmcRegistry(Map<ResourceLocation, TRegistrable> initialMap) {
         this();
-        this.internalMap.putAll(initialMap);
+        this.registerAll(initialMap);
     }
     
     public void register(TRegistrable registrable) {
+        if (this.internalMap.containsKey(registrable.getResourceLocation())) {
+            throw new IllegalArgumentException(
+                    "[NlmcRegistry] : Cannot register " + registrable + " : duplicate key already present.");
+        }
         this.internalMap.put(registrable.getResourceLocation(), registrable);
     }
     
-    public TRegistrable get(ResourceLocation resourceLocation) {
-        return this.internalMap.get(resourceLocation);
+    public void registerAll(Map<ResourceLocation, TRegistrable> registrableMap) {
+        registrableMap.forEach((key, value) -> this.register(value));
+    }
+    
+    public @NotNull TRegistrable get(ResourceLocation key) {
+        if (!this.internalMap.containsKey(key)) {
+            throw new IllegalArgumentException(
+                    "[NlmcRegistry] : Cannot get map value for " + key + " : no matching key present.");
+        }
+        return this.internalMap.get(key);
+    }
+    
+    public @Nullable TRegistrable getOrDefault(ResourceLocation key) {
+        return this.internalMap.getOrDefault(key, null);
     }
     
     public boolean containsKey(ResourceLocation key) {
@@ -59,7 +70,7 @@ public class NlmcRegistry<TRegistrable extends IRegistrable<? extends TRegistrab
         return this.internalMap.containsValue(registrable);
     }
     
-    public ResourceLocation keyOf(TRegistrable registrable) {
+    public @Nullable ResourceLocation keyOf(TRegistrable registrable) {
         for (Map.Entry<ResourceLocation, TRegistrable> entry : this.internalMap.entrySet()) {
             if (entry.getValue() == registrable) {
                 return entry.getKey();
@@ -72,16 +83,16 @@ public class NlmcRegistry<TRegistrable extends IRegistrable<? extends TRegistrab
         return this.internalMap.isEmpty();
     }
     
-    public TRegistrable remove(ResourceLocation key) {
+    public @Nullable TRegistrable remove(ResourceLocation key) {
         return this.internalMap.remove(key);
     }
     
-    public TRegistrable remove(TRegistrable value) {
-        return this.internalMap.remove(this.keyOf(value));
-    }
-    
-    public void putAll(@NotNull Map<ResourceLocation, TRegistrable> map) {
-        this.internalMap.putAll(map);
+    public @Nullable TRegistrable remove(TRegistrable value) {
+        var key = this.keyOf(value);
+        if (key == null) {
+            return null;
+        }
+        return this.internalMap.remove(key);
     }
     
     public void clear() {
@@ -100,48 +111,51 @@ public class NlmcRegistry<TRegistrable extends IRegistrable<? extends TRegistrab
         return this.internalMap.entrySet();
     }
     
-    public TRegistrable getOrDefault(ResourceLocation key) {
-        return this.internalMap.getOrDefault(key, null);
-    }
-    
     public void forEach(BiConsumer<ResourceLocation, TRegistrable> action) {
         this.internalMap.forEach(action);
     }
     
-    public void replaceAll(
-            BiFunction<ResourceLocation, TRegistrable, TRegistrable> function) {
-        this.internalMap.replaceAll(function);
+    public Set<TRegistrable> findAll(Predicate<TRegistrable> predicate) {
+        Set<TRegistrable> results = new HashSet<>();
+        for (TRegistrable registrable : this.internalMap.values()) {
+            if (predicate.test(registrable)) {
+                results.add(registrable);
+            }
+        }
+        return results;
     }
     
-    public @Nullable TRegistrable putIfAbsent(ResourceLocation key, TRegistrable value) {
-        return this.internalMap.putIfAbsent(key, value);
+    public @Nullable TRegistrable findFirst(Predicate<TRegistrable> predicate) {
+        for (TRegistrable registrable : this.internalMap.values()) {
+            if (predicate.test(registrable)) {
+                return registrable;
+            }
+        }
+        return null;
     }
     
-    public boolean replace(ResourceLocation key, TRegistrable oldValue, TRegistrable newValue) {
-        return this.internalMap.replace(key, oldValue, newValue);
+    public boolean all(Predicate<TRegistrable> predicate) {
+        for (TRegistrable registrable : this.internalMap.values()) {
+            if (!predicate.test(registrable)) {
+                return false;
+            }
+        }
+        return true;
     }
     
-    public @Nullable TRegistrable replace(ResourceLocation key, TRegistrable value) {
-        return this.internalMap.replace(key, value);
+    public boolean any(Predicate<TRegistrable> predicate) {
+        for (TRegistrable registrable : this.internalMap.values()) {
+            if (predicate.test(registrable)) {
+                return true;
+            }
+        }
+        return false;
     }
     
-    public TRegistrable computeIfAbsent(
-            ResourceLocation key, @NotNull Function<ResourceLocation, TRegistrable> mappingFunction) {
-        return this.internalMap.computeIfAbsent(key, mappingFunction);
+    public void apply(Consumer<TRegistrable> effector) {
+        for (TRegistrable registrable : this.internalMap.values()) {
+            effector.accept(registrable);
+        }
     }
     
-    public TRegistrable computeIfPresent(ResourceLocation key,
-                                                              @NotNull BiFunction<ResourceLocation, TRegistrable, TRegistrable> remappingFunction) {
-        return this.internalMap.computeIfPresent(key, remappingFunction);
-    }
-    
-    public TRegistrable compute(ResourceLocation key,
-                                                     @NotNull BiFunction<ResourceLocation, TRegistrable, TRegistrable> remappingFunction) {
-        return this.internalMap.compute(key, remappingFunction);
-    }
-    
-    public TRegistrable merge(ResourceLocation key, @NotNull TRegistrable value,
-                                                    @NotNull BiFunction<TRegistrable, TRegistrable, TRegistrable> remappingFunction) {
-        return this.internalMap.merge(key, value, remappingFunction);
-    }
 }

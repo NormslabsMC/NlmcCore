@@ -9,11 +9,12 @@ package net.normslabs.nlmc_core.items.properties;
 
 
 import net.minecraft.world.item.Tier;
-import net.normslabs.nlmc_core.abstracts.Buildable;
+import net.normslabs.nlmc_core.abstracts.AbstractBuilder;
+import net.normslabs.nlmc_core.abstracts.AbstractBuildable;
 import net.normslabs.nlmc_core.items.ItemDescriptor;
 import net.normslabs.nlmc_core.items.enums.ToolTypes;
 
-public class ItemToolProperties extends Buildable<ItemToolProperties, ItemToolProperties.Builder> {
+public class ItemToolProperties extends AbstractBuildable<ItemToolProperties, ItemToolProperties.Builder> {
     private final ItemDescriptor<?,?,?> parentDescriptor;
     private ToolTypes toolType;
     private Tier toolTier;
@@ -47,6 +48,11 @@ public class ItemToolProperties extends Buildable<ItemToolProperties, ItemToolPr
     @Override
     public Builder getBuilder() {
         return new Builder(this);
+    }
+    
+    @Override
+    public void onBuild() {
+    
     }
     
     public ToolTypes getToolType() {
@@ -91,7 +97,7 @@ public class ItemToolProperties extends Buildable<ItemToolProperties, ItemToolPr
     }
     
     
-    public class Builder extends net.normslabs.nlmc_core.abstracts.Builder<Builder, ItemToolProperties> {
+    public class Builder extends AbstractBuilder<Builder, ItemToolProperties> {
         
         public Builder(ItemToolProperties initialBuildable) {
             super(initialBuildable);

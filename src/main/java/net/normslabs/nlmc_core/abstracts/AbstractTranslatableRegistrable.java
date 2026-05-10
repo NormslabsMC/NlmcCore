@@ -17,7 +17,7 @@ import java.util.function.Function;
 
 public abstract class AbstractTranslatableRegistrable<
         TSelf extends AbstractTranslatableRegistrable<TSelf, TBuilder, TRegistrar, TNlmcType, TMcType>,
-        TBuilder extends Builder<TBuilder, TSelf>,
+        TBuilder extends AbstractBuilder<TBuilder, TSelf>,
         TRegistrar extends IDeferredRegistrar<? super TSelf, TMcType>,
         TNlmcType extends TMcType,
         TMcType>
@@ -28,7 +28,7 @@ public abstract class AbstractTranslatableRegistrable<
     protected final TranslationDictionary translations;
     
     public AbstractTranslatableRegistrable(String objectNamespace, String objectIdentifier,
-                                           Function<TSelf, TNlmcType> objectCreatorFunction) {
+                                           Function<? super TSelf, TNlmcType> objectCreatorFunction) {
         super(objectNamespace, objectIdentifier, objectCreatorFunction);
         this.translations = new TranslationDictionary();
     }
@@ -58,7 +58,7 @@ public abstract class AbstractTranslatableRegistrable<
         this.translations.merge(translationsDictionary);
     }
     
-    public abstract class Builder extends net.normslabs.nlmc_core.abstracts.Builder<TBuilder, TSelf> {
+    public abstract class Builder extends AbstractBuilder<TBuilder, TSelf> {
         
         protected Builder(TSelf initialBuildable) {
             super(initialBuildable);

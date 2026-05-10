@@ -21,9 +21,9 @@ import java.util.List;
 
 public class NlmcAxeItem extends AxeItem {
     
-    private final ItemDescriptor<?,?> descriptor;
+    private final ItemDescriptor<?,?,?> descriptor;
     
-    public NlmcAxeItem(ItemDescriptor<?,?> descriptor) {
+    public NlmcAxeItem(ItemDescriptor<?,?,?> descriptor) {
         super(descriptor.getToolProperties().getToolTier(),
               descriptor.getToolProperties().getAttackDamage(),
               descriptor.getToolProperties().getBaseAttackSpeed(),

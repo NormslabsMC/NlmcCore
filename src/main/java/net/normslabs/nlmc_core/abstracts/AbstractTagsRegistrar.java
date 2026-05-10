@@ -18,13 +18,14 @@ import net.normslabs.nlmc_core.infrastructure.NlmcRegistrar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 public abstract class AbstractTagsRegistrar<TMcObject> extends AbstractRegistrar {
     protected CompletableFuture<TagsProvider.TagLookup<TMcObject>> provider;
-    private final Map<Supplier<TMcObject>, List<TagKey<TMcObject>>> objectTagAssociations = new HashMap<>();
-    private final Map<Supplier<TagKey<TMcObject>>, List<Supplier<TagKey<TMcObject>>>> tagTagAssociations = new HashMap<>();
+    private final Map<Supplier<TMcObject>, Set<TagKey<TMcObject>>> objectTagAssociations = new HashMap<>();
+    private final Map<Supplier<TagKey<TMcObject>>, Set<Supplier<TagKey<TMcObject>>>> tagTagAssociations = new HashMap<>();
     
     protected AbstractTagsRegistrar(NlmcRegistrar modRegistrar) {
         super(modRegistrar);
@@ -36,11 +37,11 @@ public abstract class AbstractTagsRegistrar<TMcObject> extends AbstractRegistrar
         return this.provider;
     }
     
-    public Map<Supplier<TMcObject>, List<TagKey<TMcObject>>> getObjectTagAssociations() {
+    public Map<Supplier<TMcObject>, Set<TagKey<TMcObject>>> getObjectTagAssociations() {
         return this.objectTagAssociations;
     }
     
-    public Map<Supplier<TagKey<TMcObject>>, List<Supplier<TagKey<TMcObject>>>> getTagTagAssociations() {
+    public Map<Supplier<TagKey<TMcObject>>, Set<Supplier<TagKey<TMcObject>>>> getTagTagAssociations() {
         return this.tagTagAssociations;
     }
     

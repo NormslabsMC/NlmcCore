@@ -5,7 +5,7 @@
  * @since 2026-04-29 17:19
  */
 
-package net.normslabs.nlmc_core.tags;
+package net.normslabs.nlmc_core.datagen;
 
 
 import net.minecraft.core.HolderLookup;
@@ -13,6 +13,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.normslabs.nlmc_core.tags.NlmcTagsManager;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
